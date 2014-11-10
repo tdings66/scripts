@@ -1,0 +1,19 @@
+#!/bin/bash
+branches=`git branch`
+if [ 0 -ne $? ]
+then
+    echo "`pwd` is not in git control."
+    exit
+fi
+
+echo "$branches" | 
+while read line
+do
+    branch=`echo "$line" | sed 's/\*//'`
+    words=`git remote show origin | grep $branch | grep '(up to date)'`
+    if [ -z "$words" ]
+    then
+        git checkout $branch
+        git pull
+    fi
+done
