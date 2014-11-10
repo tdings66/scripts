@@ -21,14 +21,13 @@ then
     release/andes.3 \
     "
 fi
-if [ dvm-3 == "`hostname`" ]
+if [ dvm-4 == "`hostname`" ]
 then
-    brnaches="\
+    branches="\
     release/andes.4 \
     release/andes.5 \
     release/andes.6 \
     release/andes.7 \
-
     "
 fi
 if [ -z "$branches" ]
