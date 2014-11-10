@@ -13,7 +13,14 @@ do
     words=`git remote show origin | grep $branch | grep '(up to date)'`
 #    if [ -z "$words" ]
 #    then
-        git checkout $branch
+	cmd="git checkout $branch"
+	echo $cmd
+	$cmd
         git pull
+	if [ 0 -ne $? ]
+	then
+	    echo "ERROR: git pull failed!"
+	    exit
+	fi
 #    fi
 done
