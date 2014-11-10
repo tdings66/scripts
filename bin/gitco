@@ -1,0 +1,82 @@
+#!/bin/bash
+#
+# Make a local branch for each important point
+#
+
+branches=
+if [ dvm-3 == "`hostname`" ]
+then
+    branches="\
+    release/senna \
+    release/senna.0 \
+    release/senna.1 \
+    release/senna.2 \
+    release/senna.3 \
+    release/senna.4 \
+    release/senna.5 \
+    release/senna.6 \
+    release/senna.7 \
+    release/andes.1 \
+    release/andes.2 \
+    release/andes.3 \
+    "
+fi
+if [ dvm-3 == "`hostname`" ]
+then
+    brnaches="\
+    release/andes.4 \
+    release/andes.5 \
+    release/andes.6 \
+    release/andes.7 \
+
+    "
+fi
+if [ -z "$branches" ]
+then
+    echo "ERROR: Branches list is empty."
+    exit
+fi
+echo "Branches: $branches"
+
+for branch in $branches
+do
+    echo "Branch: $branch"
+    exists=`git branch | grep $branch`
+    if [ -n "$exists" ]
+    then
+	echo "...already exists"
+    else
+	git checkout -b $branch --track origin/$branch
+	git pull
+    fi
+done
+
+if [ dvm-3 == "`hostname`" ]
+then
+    # Senna.M2, Build 343 (RTM2)
+    git checkout -b ${USER}-2.1.4.343-Senna.M2-RTM2 f4fddd7e995d82ec4a00fb258d95fd0de5af66ef
+
+    # Senna.M2, Build 294 (RTM1)
+    git checkout -b ${USER}-2.1.4.294-Senna.M2-RTM1 cefe098d7e3539bcf888be07c394aecadf49ba06
+
+    # Senna.0, Build 226 (FP3)
+    git checkout -b ${USER}-2.1.0.226-Senna.0-FP3 5c7b29eea5dd7826a76fcf8a7a8596cdf783c86c
+
+    # Senna.0, Build 199 (FP2)
+    git checkout -b ${USER}-2.1.0.199-Senna.0-FP2 b8502fe22f973863c75a2475af284f405d7cb8b8
+
+    # Senna.0, Build 161
+    git checkout -b ${USER}-2.1.0.161-Senna.0 63fb1169e9dce895a89d41102b27bed19b83b5e5
+
+    # Senna.0, Build 102
+    git checkout -b ${USER}-2.1.0.102-Senna.0 246b339df7dcc559e66b08268f3c8e7f864878f9
+
+    # Senna.1, Build 166
+    git checkout -b ${USER}-2.1.1.166-Senna.1 aefb1bf390ef373e110a6b5beb1e9049c758d4df
+
+    # Senna.1, Build 108
+    git checkout -b ${USER}-2.1.1.108-Senna.1 dac17632887e54086a10f2a6a5804db87cdf647a
+
+    # Ascari.5
+    git checkout -b ${USER}-1.5.72-Ascari.5 085cae89b6f9620d9446dca48c859d90d529754f
+fi

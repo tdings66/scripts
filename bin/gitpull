@@ -1,21 +1,26 @@
 #!/bin/bash
-branches=`git branch`
+cur_branch=`git branch | awk '{print $2}'`
+echo Current branch is: $cur_branch
+
+git checkout --detach
+
+
+branches=`git branch | grep -v 'no branch'`
 if [ 0 -ne $? ]
 then
     echo "`pwd` is not in git control."
     exit
 fi
+echo "Branches: $branches"
 
-cur_branch=`git branch | awk '{print $2}'`
-echo Current branch is: $cur_branch
- 
 echo "$branches" | 
 while read line
 do
     branch=`echo "$line" | sed 's/\*//'`
-    words=`git remote show origin | grep $branch | grep '(up to date)'`
-#    if [ -z "$words" ]
-#    then
+    #words=`git remote show origin | grep $branch | grep '(up to date)'`
+    words=`git config --local --list | grep $branch`
+    if [ -n "$words" ]
+    then
 	cmd="git checkout $branch"
 	echo $cmd
 	$cmd
@@ -25,7 +30,7 @@ do
 	    echo "ERROR: git pull failed!"
 	    break
 	fi
-#    fi
+    fi
 done
 
 if [ -n "$cur_branch" ]
