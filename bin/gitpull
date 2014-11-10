@@ -6,6 +6,9 @@ then
     exit
 fi
 
+cur_branch=`git branch | awk '{print $2}'`
+echo Current branch is: $cur_branch
+ 
 echo "$branches" | 
 while read line
 do
@@ -20,7 +23,12 @@ do
 	if [ 0 -ne $? ]
 	then
 	    echo "ERROR: git pull failed!"
-	    exit
+	    break
 	fi
 #    fi
 done
+
+if [ -n "$cur_branch" ]
+then
+    git checkout $cur_branch
+fi
