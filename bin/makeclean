@@ -1,0 +1,3 @@
+# Clean Build
+rm -fr /root/.m2
+rm -fr /var/tmp/build
