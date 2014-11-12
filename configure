@@ -42,3 +42,8 @@ if [ ! -L .gitconfig ]
 then
     ln -s $HOME/git/scripts/.gitconfig .
 fi
+
+if [ ! -r .emacs.d/init.el ]
+then
+    ln -s $HOME/git/scripts/init.el .emacs.d/init.el
+fi
