@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+#
+uid=`id -u`
+if [ 0 != "$uid" ]
+then
+    sudo $0
+fi
+
+uid=`id -u`
+if [ 0 != "$uid" ]
+then
+    exit
+fi
+
+if [ ! -d "/media/VMware Tools" ]
+then
+    mount -o ro /dev/cdrom /media
+fi
+
+a_file="/media/VMware Tools/manifest.txt"
+
+if [ ! -r "$a_file" ]
+then
+    echo "ERROR: VMware Tools INstall CD not found."
+    echo "Run the VMWare Tools install from inside Workstation or ESX, etc."
+    exit
+fi
+
+cd /tmp
+tar xf /media/VMware\ Tools/VMwareTools-*.tar.gz
+if [ 0 -ne $? ]
+then
+    echo "ERROR: tar extract failed for file \"$tar_file\""
+    exit
+fi
+cd vmware-tools-distrib
+./vmware-install.pl --default
