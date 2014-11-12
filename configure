@@ -1,0 +1,44 @@
+#!/bin/bash
+#
+#
+cd $HOME
+if [ -r Luggage ]
+then
+    rm Luggage
+fi
+if [ ! -L Luggage ]
+then 
+    ln -s /mnt/hgfs/Luggage .
+fi
+if [ ! -d .ssh ]
+then
+    mkdir .ssh
+fi
+if [ ! -r .ssh/id_rsa ]
+then
+    cp Luggage/RSA\ Keys/id_rsa .ssh
+    chmod 600 .ssh/id_rsa
+fi
+if [ ! -r .ssh/id_rsa.pub ]
+then
+    cp Luggage/RSA\ Keys/id_rsa.pub .ssh
+    chmod 600 .ssh/id_rsa.pub
+fi
+
+if [ -r .profile ]
+then
+    rm .profile
+fi
+if [ ! -L .profile ]
+then
+    ln -s $HOME/git/scripts/.profile .
+fi
+
+if [ -r .gitconfig ]
+then
+    rm .gitconfig
+fi
+if [ ! -L .gitconfig ]
+then
+    ln -s $HOME/git/scripts/.gitconfig .
+fi
