@@ -181,7 +181,7 @@
 
 ;;;; Libraries
 (setq load-path (append (list nil "~/.emacs.d/elisp") load-path))
-(load-library "google-c-style")
+;(load-library "google-c-style")
 (load-library "git")
 (load-library "git-blame")
 (load-library "ssh.el")
