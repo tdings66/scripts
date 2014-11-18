@@ -25,7 +25,7 @@ then
     chmod 600 .ssh/id_rsa.pub
 fi
 
-if [ -r .profile ]
+if [ ! -L .profile ]
 then
     rm .profile
 fi
