@@ -24,6 +24,11 @@ then
     cp Luggage/RSA\ Keys/id_rsa.pub .ssh
     chmod 600 .ssh/id_rsa.pub
 fi
+if [ ! -r .ssh/authorized_keys ]
+then
+    cp .ssh/id_rsa.pub .ssh/authorized_keys
+    chmod 600 .ssh/authorized_keys
+fi
 
 if [ ! -L .profile ]
 then
@@ -41,4 +46,9 @@ fi
 if [ ! -L .gitconfig ]
 then
     ln -s $HOME/git/scripts/.gitconfig .
+fi
+
+if [ ! -r .emacs.d/init.el ]
+then
+    ln -s $HOME/git/scripts/init.el .emacs.d/init.el
 fi

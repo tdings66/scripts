@@ -1,4 +1,4 @@
-;;;; Glenn's emacs initialization file
+;;; Glenn's emacs initialization file
 ; Author: Glenn Virball
 ; Remember the following useful ways to use emacs:
 ;
@@ -156,7 +156,7 @@
 
 
 ;;;; ******* PROJECT LOCATION INFO *******
-(setq myprojdir "~/rfs/src")
+(setq myprojdir "~/git/rfs/src")
 (setq elpa-root-path "~/.emacs.d/elpa")
 
 
@@ -172,7 +172,7 @@
 
 ;(setq frame-title-format (list "%b - " (getenv "LOGNAME") "@" system-name))
 (setq frame-title-format (list "EMACS [%b - " (getenv "LOGNAME") "]"))
-(setq user-mail-address "Glenn.Virball@SimpliVity.com")
+(setq user-mail-address "Tom.Dings@SimpliVity.com")
 ;(put 'narrow-to-region 'disabled nil)
 ;(global-unset-key "\C-z")               ;minimize screws with Unity mode
 ;(global-set-key (kbd "M-C-f") 'grep-find)
@@ -182,30 +182,148 @@
 ;;;; Libraries
 (setq load-path (append (list nil "~/.emacs.d/elisp") load-path))
 ;(load-library "google-c-style")
-(load-library "git")
-(load-library "git-blame")
-(load-library "ssh.el")
+					;(load-library "git")
+;(load-library "git-blame")
+;(load-library "ssh.el")
 
 ;;;; ******* EMACS PACKAGE MANAGER *******
-;;;; Include emacs package manager... in version 24.x+, the package-initialize
-;;;; command is issued automatically after the init.el and/or .emacs file
-;;;; is loaded, so this placement in the version 23.x file simulates that
-;;;; behavior.
-;(require 'package)
-(load-file "~/.emacs.d/package/package.elc")
+(require 'cl)
+(require 'package)
+;(load-file "~/.emacs.d/package/package.elc")
 ;(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 ;                         ("marmalade" . "http://marmalade-repo.org/packages/")
 ;                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 ;; Any add to list for package-archives (to add marmalade or melpa) goes here
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+;(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 (package-initialize)
 
+(defvar current-user
+  (getenv
+   (if (equal system-type 'windows-nt) "USERNAME" "USER")))
+
+(when (version< emacs-version "24.1")
+  (error "Prelude requires at least GNU Emacs 24.1, but you're running %s" emacs-version))
+
+;; Always load newest byte code
+(setq load-prefer-newer t)
+
+(defvar prelude-dir (file-name-directory load-file-name)
+  "The root dir of the Emacs Prelude distribution.")
+(defvar prelude-core-dir (expand-file-name "core" prelude-dir)
+  "The home of Prelude's core functionality.")
+(defvar prelude-modules-dir (expand-file-name  "modules" prelude-dir)
+  "This directory houses all of the built-in Prelude modules.")
+(defvar prelude-personal-dir (expand-file-name "personal" prelude-dir)
+    "This directory is for your personal configuration.
+Users of Emacs Prelude are encouraged to keep their personal configuration
+changes in this directory.  All Emacs Lisp files there are loaded automatically
+by Prelude.")
+(defvar prelude-personal-preload-dir (expand-file-name "preload" prelude-personal-dir)
+  "This directory is for your personal configuration, that you want loaded before Prelude.")
+(defvar prelude-vendor-dir (expand-file-name "vendor" prelude-dir)
+  "This directory houses packages that are not yet available in ELPA (or MELPA).")
+(defvar prelude-savefile-dir (expand-file-name "savefile" prelude-dir)
+  "This folder stores all the automatically generated save/history-files.")
+(defvar prelude-modules-file (expand-file-name "prelude-modules.el" prelude-dir)
+  "This files contains a list of modules that will be loaded by Prelude.")
+
+(unless (file-exists-p prelude-savefile-dir)
+  (make-directory prelude-savefile-dir))
+
+(defun prelude-add-subfolders-to-load-path (parent-dir)
+  "Add all level PARENT-DIR subdirs to the `load-path'."
+  (dolist (f (directory-files parent-dir))
+    (let ((name (expand-file-name f parent-dir)))
+      (when (and (file-directory-p name)
+		 (not (string-prefix-p "." f)))
+	(add-to-list 'load-path name)
+	(prelude-add-subfolders-to-load-path name)))))
+
+;; add Prelude's directories to Emacs's `load-path'
+(add-to-list 'load-path prelude-core-dir)
+(add-to-list 'load-path prelude-modules-dir)
+(add-to-list 'load-path prelude-vendor-dir)
+(prelude-add-subfolders-to-load-path prelude-vendor-dir)
+
+;; reduce the frequency of garbage collection by making it happen on
+;; each 50MB of allocated data (the default is on every 0.76MB)
+(setq gc-cons-threshold 50000000)
+
+;; warn when opening files bigger than 100MB
+(setq large-file-warning-threshold 100000000)
+
+;; preload the personal settings from `prelude-personal-preload-dir'
+(when (file-exists-p prelude-personal-preload-dir)
+  (message "Loading personal configuration files in %s..." prelude-personal-preload-dir)
+  (mapc 'load (directory-files prelude-personal-preload-dir 't "^[^#].*el$")))
+
+(defvar prelude-packages
+  '(git git-blame color-theme)
+  "A list of packages to ensure are installed at launch.")
+
+(defun prelude-packages-installed-p ()
+  (loop for p in prelude-packages
+	when (not (package-installed-p p)) do (return nil)
+	finally (return t))
+  "Returns true if all packages in prelude-packages are installed, false otherwise.")
+
+(unless (prelude-packages-installed-p)
+  ;; check for new packages (package versions)
+  (message "%s" "Emacs Prelude is now refreshing its package database...")
+  (package-refresh-contents)
+  (message "%s" " done.")
+  ;; install the missing packages
+  (dolist (p prelude-packages)
+    (when (not (package-installed-p p))
+      (package-install p)
+      (message "%s%s" "Installed package" p))))
+
+(provide 'prelude-packages)
+;;; prelude-packages.el ends here
+
+
+(message "Loading Prelude's core...")
+
+;; the core stuff
+;(require 'prelude-packages)
+;(require 'prelude-custom)  ;; Needs to be loaded before core, editor and ui
+;(require 'prelude-ui)
+;(require 'prelude-core)
+;(require 'prelude-mode)
+;(require 'prelude-editor)
+;(require 'prelude-global-keybindings)
+
+;; OSX specific settings
+;(when (eq system-type 'darwin)
+;  (require 'prelude-osx))
+
+;(message "Loading Prelude's modules...")
+
+;; the modules
+(when (file-exists-p prelude-modules-file)
+  (load prelude-modules-file))
+
+;; config changes made through the customize UI will be store here
+(setq custom-file (expand-file-name "custom.el" prelude-personal-dir))
+
+;; load the personal settings (this includes `custom-file')
+(when (file-exists-p prelude-personal-dir)
+  (message "Loading personal configuration files in %s..." prelude-personal-dir)
+  (mapc 'load (directory-files prelude-personal-dir 't "^[^#].*el$")))
+
+;(message "Prelude is ready to do thy bidding, Master %s!" current-user)
+
+;(prelude-eval-after-init
+ ;; greet the use with some useful tip
+;  (run-at-time 5 nil 'prelude-tip-of-the-day))
+
+
 
 ;;;; Templates
-(require 'template)
-(template-initialize)
+;(require 'template)
+;(template-initialize)
 
 ;;;; Copyright
 (require 'copyright)
@@ -243,6 +361,7 @@
 
 
 ;; ******* ENABLE A COLOR THEME *******
+;(unless (member "color-theme" package-alist) (package-install "color-theme"))
 (require 'color-theme)
 (color-theme-initialize)
 (color-theme-oswald)
@@ -361,8 +480,8 @@
 
 ;;;; ******* SETUP TAGS-FILE *******
 ;;;; Not needed when using CEDET/Semantic.
-;(setq tags-table-list '("/home/gvirball/rfs/"))
-;(setq tags-file-name "/home/gvirball/rfs/")
+;(setq tags-table-list '("/home/tdings/git/rfs/"))
+;(setq tags-file-name "/home/tdings/git/rfs/")
 
 
 ;;;; ******* ASCOPE *******
@@ -376,13 +495,13 @@
 ;;;; Note that this is a pre-requisite for ECB.  The following should
 ;;;; work on a fresh checkout of cedet using bzr scm
 (setq cedet-root-path (file-name-as-directory "~/.emacs.d/cedet/"))
-(load-file (concat cedet-root-path "cedet-devel-load.el"))
+;(load-file (concat cedet-root-path "cedet-devel-load.el"))
 (add-to-list 'load-path (concat cedet-root-path "contrib"))
 
 ;; Enable the following submodes/features of Semantic...
 (add-to-list 'semantic-default-submodes 'global-semanticdb-minor-mode)                     ; Global support for Semantic DB
 (add-to-list 'semantic-default-submodes 'global-semantic-mru-bookmark-mode)                ; Automatic tag bookmarking to enable jumping around
-(add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode)                       ; Enable context menu bound to right mouse button
+;(add-to-list 'semantic-default-submodes 'global-cedet-m3-minor-mode)                       ; Enable context menu bound to right mouse button
 ;(add-to-list 'semantic-default-submodes 'global-semantic-highlight-func-mode)              ; Highlight first line of function/class
 ;(add-to-list 'semantic-default-submodes 'global-semantic-stickyfunc-mode)                  ; Show current tag in top line of buffer 
 (add-to-list 'semantic-default-submodes 'global-semantic-decoration-mode)                  ; Decorate tags with separate styles
@@ -412,10 +531,10 @@
 ;(semantic-add-system-include "/usr/include/" 'c-mode)
  
 ;; Add search paths for project root
-;(semantic-add-project-root "/home/gvirball/rfs/")
+;(semantic-add-project-root "/home/tdings/git/rfs/")
 
 ;; Load the contrib library
-(require 'eassist)
+;(require 'eassist)
  
 ;; Implementing my own copy of this function since it is required by
 ;; semantic-ia-fast-jump but this function is not defined in etags.el
@@ -494,15 +613,15 @@
   (cedet-idutils-create/update-database (file-name-as-directory myprojdir)))
 
 ;; cscope support
-(require 'semantic/db-cscope)
-(when (cedet-cscope-version-check t)
-  (semanticdb-enable-cscope-databases)
-  (cedet-cscope-create/update-database (file-name-as-directory myprojdir)))
+;(require 'semantic/db-cscope)
+;(when (cedet-cscope-version-check t)
+;  (semanticdb-enable-cscope-databases)
+;  (cedet-cscope-create/update-database (file-name-as-directory myprojdir)))
 
 ;; exuberant ctags support
-(when (cedet-ectag-version-check t)
-  (semanticdb-enable-ectags)
-  (semantic-load-enable-secondary-ectags-support))
+;(when (cedet-ectag-version-check t)
+;  (semanticdb-enable-ectags)
+;  (semantic-load-enable-secondary-ectags-support))
 
 ;; ebrowse support... no need for a check since ebrowse is part of emacs
 ;(require 'semantic/db-ebrowse)
@@ -511,7 +630,7 @@
 
 
 ;; SRecode template support 
-(global-srecode-minor-mode 1)            ; Enable template insertion menu
+;(global-srecode-minor-mode 1)            ; Enable template insertion menu
 
 ;; Enable EDE for a pre-existing C++ project... this needs to be debugged...
 ;; use of EDE requires esoteric knowledge to function properly
@@ -587,18 +706,18 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(c-default-style "linux")
- '(ecb-layout-name "gv8")
- '(ecb-layout-window-sizes (quote (("gv8" (ecb-analyse-buffer-name 0.14218009478672985 . 0.33962264150943394) (ecb-methods-buffer-name 0.14218009478672985 . 0.6415094339622641) (ecb-speedbar-buffer-name 0.14218009478672985 . 0.9811320754716981)) ("gv7" (ecb-directories-buffer-name 0.1092436974789916 . 0.24193548387096775) (ecb-sources-buffer-name 0.1092436974789916 . 0.27419354838709675) (ecb-methods-buffer-name 0.1092436974789916 . 0.46774193548387094)) ("gv3" (ecb-directories-buffer-name 0.1703056768558952 . 0.26153846153846155) (ecb-history-buffer-name 0.2183406113537118 . 0.12307692307692308) (ecb-sources-buffer-name 0.2183406113537118 . 0.13846153846153847) (ecb-methods-buffer-name 0.2096069868995633 . 0.26153846153846155) (ecb-analyse-buffer-name 0.22270742358078602 . 0.13846153846153847) (ecb-symboldef-buffer-name 0.22270742358078602 . 0.12307692307692308) (ecb-default-buffer-name 0.1965065502183406 . 0.26153846153846155)) ("gv2" (ecb-directories-buffer-name 0.2149122807017544 . 0.18032786885245902) (ecb-sources-buffer-name 0.2149122807017544 . 0.22950819672131148) (ecb-methods-buffer-name 0.2149122807017544 . 0.3442622950819672) (ecb-analyse-buffer-name 0.2149122807017544 . 0.22950819672131148)) ("left8" (ecb-directories-buffer-name 0.2324561403508772 . 0.1935483870967742) (ecb-sources-buffer-name 0.2324561403508772 . 0.3064516129032258) (ecb-methods-buffer-name 0.2324561403508772 . 0.3387096774193548) (ecb-history-buffer-name 0.2324561403508772 . 0.14516129032258066)))))
+; '(ecb-layout-name "gv8")
+; '(ecb-layout-window-sizes (quote (("gv8" (ecb-analyse-buffer-name 0.14218009478672985 . 0.33962264150943394) (ecb-methods-buffer-name 0.14218009478672985 . 0.6415094339622641) (ecb-speedbar-buffer-name 0.14218009478672985 . 0.9811320754716981)) ("gv7" (ecb-directories-buffer-name 0.1092436974789916 . 0.24193548387096775) (ecb-sources-buffer-name 0.1092436974789916 . 0.27419354838709675) (ecb-methods-buffer-name 0.1092436974789916 . 0.46774193548387094)) ("gv3" (ecb-directories-buffer-name 0.1703056768558952 . 0.26153846153846155) (ecb-history-buffer-name 0.2183406113537118 . 0.12307692307692308) (ecb-sources-buffer-name 0.2183406113537118 . 0.13846153846153847) (ecb-methods-buffer-name 0.2096069868995633 . 0.26153846153846155) (ecb-analyse-buffer-name 0.22270742358078602 . 0.13846153846153847) (ecb-symboldef-buffer-name 0.22270742358078602 . 0.12307692307692308) (ecb-default-buffer-name 0.1965065502183406 . 0.26153846153846155)) ("gv2" (ecb-directories-buffer-name 0.2149122807017544 . 0.18032786885245902) (ecb-sources-buffer-name 0.2149122807017544 . 0.22950819672131148) (ecb-methods-buffer-name 0.2149122807017544 . 0.3442622950819672) (ecb-analyse-buffer-name 0.2149122807017544 . 0.22950819672131148)) ("left8" (ecb-directories-buffer-name 0.2324561403508772 . 0.1935483870967742) (ecb-sources-buffer-name 0.2324561403508772 . 0.3064516129032258) (ecb-methods-buffer-name 0.2324561403508772 . 0.3387096774193548) (ecb-history-buffer-name 0.2324561403508772 . 0.14516129032258066)))))
  '(ecb-new-ecb-frame nil)
  '(ecb-options-version "2.40")
  '(ecb-process-non-semantic-files (quote nil))
- '(ecb-source-path (quote ("/home/gvirball/rfs/src")))
+ '(ecb-source-path (quote ("/home/tdings/git/rfs/src")))
  '(ecb-vc-enable-support t)
- '(ede-project-directories (quote ("/home/gvirball/rfs")))
+ '(ede-project-directories (quote ("/home/tdings/git/rfs")))
  '(helm-gtags-auto-update t)
  '(helm-gtags-ignore-case t)
  '(helm-gtags-path-style (quote relative))
- '(semanticdb-project-roots (quote ("/home/gvirball/rfs")))
+ '(semanticdb-project-roots (quote ("/home/tdings/git/rfs")))
  '(which-function-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -619,20 +738,20 @@
 
 ;;;; Shells - Thanks to Neil Swinton for this functionality!
 ;
-;(setq svt-common-commands (list "cd /home/gvirball/rfs"))
+;(setq svt-common-commands (list "cd /home/tdings/git/rfs"))
 ;
 ;(setq svtsetup-commands (list "sudo su" "source svtsetup" "cd $SVTBUILD"))
 ;
 ;(setq svt-root-bash-commands (list 
 ;                              "PS1='${debian_chroot:+($debian_chroot)}\\t \\u@\\h:\\w\\$ '"
-;                              "export PATH=$PATH:/home/gvirball/bin"
-;                              "source /home/gvirball/.bash_aliases"
-;                              "source /home/gvirball/.bash_functions"
+;                              "export PATH=$PATH:/home/tdings/git/scripts/bin"
+;                              "source /home/tdings/.bash_aliases"
+;                              "source /home/tdings/.bash_functions"
 ;                              "export SVTBUILDSTATUS=0"
 ;                              )
 ;)
 ;
-;(setq svt-build-bash-commands (list "cd /var/tmp/build" "/home/gvirball/bin/svtbuild.py -d"))
+;(setq svt-build-bash-commands (list "cd /var/tmp/build" "/home/tdings/bin/svtbuild.py -d"))
 ;
 ;
 ;(defun svt-shell (name commands)
@@ -741,7 +860,7 @@
 ;  ;; Your init file should contain only one such instance.
 ;  ;; If there is more than one, they won't work right.
 ; '(c-auto-align-backslashes t)
-; '(compile-command "~gvirball/bin/svtbuild.py storage")
+; '(compile-command "~tdings/bin/svtbuild.py storage")
 ; '(safe-local-variable-values (quote ((c-default-style . "bsd"))))
 ; '(sort-fold-case t))
 ;(custom-set-faces
