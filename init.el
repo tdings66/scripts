@@ -362,9 +362,10 @@ by Prelude.")
 
 ;; ******* ENABLE A COLOR THEME *******
 ;(unless (member "color-theme" package-alist) (package-install "color-theme"))
-(require 'color-theme)
+;(require 'color-theme)
 (color-theme-initialize)
-(color-theme-oswald)
+					;(color-theme-oswald)
+(color-theme-tty-dark)
 
 ; ******* Favorite color-themes *******
 
@@ -1007,3 +1008,8 @@ by Prelude.")
 ;	     ; name the workgroup prjct-wg
 ;	     ; restore the workgroup with the name supplied above
 ;	     (wg-save-session-on-emacs-exit)))
+
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(setq frame-background-mode 'dark)
+
