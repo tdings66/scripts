@@ -52,3 +52,7 @@ if [ ! -r .emacs.d/init.el ]
 then
     ln -s $HOME/git/scripts/init.el .emacs.d/init.el
 fi
+if [ ! -d .emacs.d/vendor ]
+then
+    mkdir .emacs.d/vendor
+fi
