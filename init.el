@@ -1010,6 +1010,6 @@ by Prelude.")
 ;	     (wg-save-session-on-emacs-exit)))
 
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(setq frame-background-mode 'dark)
+;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+;(setq frame-background-mode 'dark)
 
