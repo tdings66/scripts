@@ -1,0 +1,7 @@
+#!/bin/bash
+for dir in / $HOME /var/tmp
+do
+    df -h $dir
+    sudo dd if=/dev/zero of=${dir}/BIGFILE bs=1024000
+    sudo rm -f ${dir}/BIGFILE
+done
