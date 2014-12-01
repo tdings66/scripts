@@ -2,11 +2,11 @@
 #
 #
 cd $HOME
-if [ -r Luggage ]
+if [ -r Luggage ] && [ ! -d Luggage ]
 then
     rm Luggage
 fi
-if [ ! -L Luggage ]
+if [ ! -L Luggage ] && [ ! -d Luggage ]
 then 
     ln -s /mnt/hgfs/Luggage .
 fi
