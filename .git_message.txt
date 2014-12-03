@@ -1,0 +1,9 @@
+# Don't forget to add your JIRA ID somewhere in the commit message:
+#
+#------------- Headline (50 chars) --------------#
+#
+#-------------------- Explanatory Text (72 chars) ---------------------#
+#
+# Blank lines 'twixt additional paragraphs
+#
+#  - Bullet points are also fine.

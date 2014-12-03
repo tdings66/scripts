@@ -19,3 +19,5 @@
 	branch = auto
 	interactive = auto
 	diff = auto
+[commit]
+	template = /home/tdings/.git_message.txt

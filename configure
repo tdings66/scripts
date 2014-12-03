@@ -51,6 +51,10 @@ if [ ! -L .gitconfig ]
 then
     ln -s $HOME/git/scripts/.gitconfig .
 fi
+if [ ! -L .git_message.txt ]
+then
+    ln -s $HOME/got/scripts/.git_message.txt .
+fi
 
 if [ ! -r .emacs.d/init.el ]
 then
