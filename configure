@@ -38,6 +38,10 @@ if [ ! -L .profile ]
 then
     ln -s $HOME/git/scripts/.profile .
 fi
+if [ ! -L .bashrc ]
+then
+    ln -s $HOME/git/scripts/.bashrc .
+fi
 
 if [ -r .gitconfig ]
 then

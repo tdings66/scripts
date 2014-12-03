@@ -2,6 +2,7 @@
 	autocrlf = input
 	safecrlf = true
 	excludesfile = /home/tdings/.gitignore
+	editor = emacs
 [alias]
   co = checkout
   ci = commit
@@ -13,3 +14,8 @@
 [user]
 	name = Tom Dings
 	email = tom.dings@simplivity.com
+[color]
+	status = auto
+	branch = auto
+	interactive = auto
+	diff = auto
