@@ -365,11 +365,42 @@ by Prelude.")
 ;(require 'color-theme)
 (color-theme-initialize)
 					;(color-theme-oswald)
-(color-theme-tty-dark)
+;(if ((display-color-cells) 20)
+    (color-theme-tty-dark)
+;  (color-theme-calm-forest))
+
+(defun car-theme () ;figure out if we need car or caar
+  (interactive)
+  (cond
+   ((consp (car theme-current))
+    (caar theme-current))
+   (t
+            (car theme-current))))
+(defun my-theme-set-default () ; Set the first row
+  (interactive)
+  (setq theme-current my-color-themes)
+        (funcall (car-theme)))
+(defun my-describe-theme () ; Show the current theme
+  (interactive)
+  (message "%s" (car-theme)))
+(defun my-theme-cycle ()
+  (interactive)
+  (setq theme-current (cdr theme-current))
+  (if (null theme-current)
+      (setq theme-current my-color-themes)
+    (funcall (car-theme)))
+  (message "%S" (car-theme)))
+
+(setq theme-current my-color-themes)
+(setq color-theme-is-global nil) ; Initialization
+    (my-theme-set-default)
+(global-set-key f10 'my-theme-cycle)
 
 ; ******* Favorite color-themes *******
 
 ;; Dark colored themes...
+;(color-theme-dark-laptop)
+
 ;(color-theme-goldenrod)
 ;(color-theme-oswald)
 ;(color-theme-jsc-dark)
@@ -380,13 +411,19 @@ by Prelude.")
 ;(color-theme-lawrence)
 
 ;; Medium colored themes...
-;(color-theme-robin-hood)
+;(color-theme-classic)
+;(color-theme-kingsajz)
+;(color-theme-calm-forest)
+
+					;(color-theme-robin-hood)
 ;(color-theme-gnome2)
 
 ;; Light colored themes...
-;(color-theme-wheat)
-;(color-theme-pierson)
 
+
+					;(color-theme-wheat)
+;(color-theme-pierson)
+;(color-theme-emacs21)
 
 ;; A big list of color themes
 ;(color-theme-arjen)
