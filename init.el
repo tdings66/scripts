@@ -369,6 +369,9 @@ by Prelude.")
     (color-theme-tty-dark)
 ;  (color-theme-calm-forest))
 
+(setq my-color-themes color-themes) ; Start with all of them
+
+
 (defun car-theme () ;figure out if we need car or caar
   (interactive)
   (cond
@@ -394,7 +397,7 @@ by Prelude.")
 (setq theme-current my-color-themes)
 (setq color-theme-is-global nil) ; Initialization
     (my-theme-set-default)
-(global-set-key f10 'my-theme-cycle)
+(global-set-key [f10] 'my-theme-cycle)
 
 ; ******* Favorite color-themes *******
 

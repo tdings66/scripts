@@ -118,6 +118,9 @@ fi
 if [ -d "$HOME/.emacs.d/lroot/bin" ] ; then
     PATH="$HOME/.emacs.d/lroot/bin:$PATH"
 fi
+if [ -d "$HOME/git/coredebug" ] ; then
+    PATH="$HOME/git/coredebug:$PATH"
+fi
 
 # GIT aliases
 alias gs='git status '
