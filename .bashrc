@@ -118,6 +118,7 @@ fi
 if [ -d "$HOME/.emacs.d/lroot/bin" ] ; then
     PATH="$HOME/.emacs.d/lroot/bin:$PATH"
 fi
+# Include coredebug if it exists
 if [ -d "$HOME/git/coredebug" ] ; then
     PATH="$HOME/git/coredebug:$PATH"
 fi

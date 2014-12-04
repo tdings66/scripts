@@ -33,26 +33,21 @@ fi
 if [ ! -L .profile ]
 then
     rm .profile
-fi
-if [ ! -L .profile ]
-then
     ln -s $HOME/git/scripts/.profile .
 fi
 if [ ! -L .bashrc ]
 then
+    rm .bashrc
     ln -s $HOME/git/scripts/.bashrc .
 fi
-
 if [ -r .gitconfig ]
 then
     rm .gitconfig
-fi
-if [ ! -L .gitconfig ]
-then
     ln -s $HOME/git/scripts/.gitconfig .
 fi
 if [ ! -L .git_message.txt ]
 then
+    rm .git_message.txt
     ln -s $HOME/got/scripts/.git_message.txt .
 fi
 
@@ -60,6 +55,7 @@ if [ ! -r .emacs.d/init.el ]
 then
     ln -s $HOME/git/scripts/init.el .emacs.d/init.el
 fi
+
 if [ ! -d .emacs.d/vendor ]
 then
     mkdir .emacs.d/vendor
