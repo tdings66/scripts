@@ -402,74 +402,22 @@ by Prelude.")
 ; ******* Favorite color-themes *******
 
 ;; Dark colored themes...
-;(color-theme-dark-laptop)
 
-;(color-theme-goldenrod)
-;(color-theme-oswald)
-;(color-theme-jsc-dark)
-;(color-theme-taylor)
-;(color-theme-comidia)
-;(color-theme-calm-forest)
-;(color-theme-matrix)
-;(color-theme-lawrence)
+;(color-theme-dark-laptop)
+;(color-theme-tty-dark)
 
 ;; Medium colored themes...
+
 ;(color-theme-classic)
 ;(color-theme-kingsajz)
 ;(color-theme-calm-forest)
 
-					;(color-theme-robin-hood)
-;(color-theme-gnome2)
-
 ;; Light colored themes...
 
-
-					;(color-theme-wheat)
+;(color-theme-aalto-light)
+;(color-theme-wheat)
 ;(color-theme-pierson)
 ;(color-theme-emacs21)
-
-;; A big list of color themes
-;(color-theme-arjen)
-;(color-theme-calm-forest)
-;(color-theme-clarity)
-;(color-theme-classic)
-;(color-theme-comidia)
-;(color-theme-dark-laptop)
-;(color-theme-digital-ofs1)
-;(color-theme-euphoria)
-;(color-theme-example)
-;(color-theme-gnome)
-;(color-theme-gnome2)
-;(color-theme-goldenrod)
-;(color-theme-gray30)
-;(color-theme-hober)
-;(color-theme-infodoc)
-;(color-theme-jsc-dark)
-;(color-theme-lawrence)
-;(color-theme-ld-dark)
-;(color-theme-lethe)
-;(color-theme-marquardt)
-;(color-theme-matrix)
-;(color-theme-midnight)
-;(color-theme-molokai)
-;(color-theme-oswald)
-;(color-theme-pierson)
-;(color-theme-renegade)
-;(color-theme-retro-green)
-;(color-theme-retro-orange)
-;(color-theme-robin-hood)
-;(color-theme-rotor)
-;(color-theme-shaman)
-;(color-theme-sitaramv-solaris)
-;(color-theme-standard)
-;(color-theme-subtle-blue)
-;(color-theme-subtle-hacker)
-;(color-theme-taylor)
-;(color-theme-tty-dark)
-;(color-theme-whateveryouwant)
-;(color-theme-wheat)
-;(color-theme-wordperfect)
-;(color-theme-xemacs)
 
 
 ;;;; Desktop
@@ -514,9 +462,9 @@ by Prelude.")
 
 ;;;; ******* GDB STUFF *******
 ;;;; OPTIONAL, avoid typing full path when starting gdb
-;(global-set-key (kbd "C-c C-g")
-; '(lambda ()(interactive) (gud-gdb (concat "gdb --fullname " (cppcm-get-exe-path-current-buffer))))
-;)
+(global-set-key (kbd "C-c C-g")
+ '(lambda ()(interactive) (gud-gdb (concat "gdb -o --fullname " (cppcm-get-exe-path-current-buffer))))
+)
 
 
 ;;;; ******* SETUP TAGS-FILE *******
