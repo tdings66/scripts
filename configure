@@ -30,30 +30,35 @@ then
     chmod 600 .ssh/authorized_keys
 fi
 
-if [ ! -L .profile ]
+diff .profile $HOME/git/scripts/.profile
+if [ 0 -ne $? ]
 then
     rm .profile
-    ln -s $HOME/git/scripts/.profile .
+    ln $HOME/git/scripts/.profile .
 fi
-if [ ! -L .bashrc ]
+diff .bashrc $HOME/git/scripts/.bashrc
+if [ 0 -ne $? ]
 then
     rm .bashrc
-    ln -s $HOME/git/scripts/.bashrc .
+    ln $HOME/git/scripts/.bashrc .
 fi
-if [ -r .gitconfig ]
+diff .gitconfig $HOME/git/scripts/.gitconfig
+if [ 0 -ne $? ]
 then
     rm .gitconfig
-    ln -s $HOME/git/scripts/.gitconfig .
+    ln $HOME/git/scripts/.gitconfig .
 fi
-if [ ! -L .git_message.txt ]
+diff .git_message.txt $HOME/got/scripts/.git_message.txt
+if [ 0 -ne $? ]
 then
     rm .git_message.txt
     ln -s $HOME/got/scripts/.git_message.txt .
 fi
-
-if [ ! -r .emacs.d/init.el ]
+diff .emacs.d/init.el $HOME/git/scripts/init.el
+if [ 0 -ne $? ]
 then
-    ln -s $HOME/git/scripts/init.el .emacs.d/init.el
+    rm .emacs.d/init.el
+    ln $HOME/git/scripts/init.el .emacs.d/init.el
 fi
 
 if [ ! -d .emacs.d/vendor ]

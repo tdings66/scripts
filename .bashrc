@@ -121,7 +121,9 @@ fi
 # Include coredebug if it exists
 if [ -d "$HOME/git/coredebug" ] ; then
     PATH="$HOME/git/coredebug:$PATH"
+    export COREDEBUG_SVTFS_REPO=$HOME/git/rfs
 fi
+export PATH
 
 # GIT aliases
 alias gs='git status '
