@@ -79,8 +79,21 @@ fi
 crashplan_proc=`ps -fe | grep CrashPlanService`
 if [ -z "$crashplan_proc" ]
 then
-    echo "Please install and configure CrashPlanPro to backup:"
+    echo "Please install and configure CrashPlanPro to automate backup of:"
     echo "    $HOME/git.backup"
-    echo "Get CrashlanPro from here:"
+    echo "Getting CrashlanPro from here..."
     echo "    http://www.code42.com/business"
+    echo "    http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4"
+    if [ ! -r $HOME/Downloads/CrashPlanPRO_3.6.4_Linux.tar ]
+    then
+        mkdir -p Downloads 2>/dev/null
+        cd Downloads
+        wget http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4
+        gunzip CrashPlanPRO_3.6.4_Linux.tgz
+        tar xf CrashPlanPRO_3.6.4_Linux.tar
+        echo "    Run:"
+        echo "        $HOME/Downloads/CrashPlanPRO-install/install.sh"
+        echo "    to install Crash Plan"
+        cd $HOME
+    fi
 fi
