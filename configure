@@ -66,6 +66,14 @@ then
     mkdir .emacs.d/vendor
 fi
 
+tools_mnt=`grep svt-tools02 /etc/fstab`
+if [ -z "$tools_mnt" ]
+then
+    sudo mkdir -p /Support
+    sudo sh -c "echo svt-tools02:/captures/Support /Support nfs >> /etc/fstab"
+    sudo mount /Support
+fi
+
 cron_entry=`crontab -l | grep git_backup`
 if [ -z "$cron_entry" ]
 then
