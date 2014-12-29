@@ -30,31 +30,31 @@ then
     chmod 600 .ssh/authorized_keys
 fi
 
-diff .profile $HOME/git/scripts/.profile
+diff .profile $HOME/git/scripts/.profile 2>/dev/null
 if [ 0 -ne $? ]
 then
     rm .profile
     ln $HOME/git/scripts/.profile .
 fi
-diff .bashrc $HOME/git/scripts/.bashrc
+diff .bashrc $HOME/git/scripts/.bashrc 2>/dev/null
 if [ 0 -ne $? ]
 then
     rm .bashrc
     ln $HOME/git/scripts/.bashrc .
 fi
-diff .gitconfig $HOME/git/scripts/.gitconfig
+diff .gitconfig $HOME/git/scripts/.gitconfig 2>/dev/null
 if [ 0 -ne $? ]
 then
     rm .gitconfig
     ln $HOME/git/scripts/.gitconfig .
 fi
-diff .git_message.txt $HOME/got/scripts/.git_message.txt
+diff .git_message.txt $HOME/got/scripts/.git_message.txt 2>/dev/null
 if [ 0 -ne $? ]
 then
     rm .git_message.txt
-    ln -s $HOME/got/scripts/.git_message.txt .
+    ln -s $HOME/git/scripts/.git_message.txt .
 fi
-diff .emacs.d/init.el $HOME/git/scripts/init.el
+diff .emacs.d/init.el $HOME/git/scripts/init.el 2>/dev/null
 if [ 0 -ne $? ]
 then
     rm .emacs.d/init.el
@@ -64,4 +64,44 @@ fi
 if [ ! -d .emacs.d/vendor ]
 then
     mkdir .emacs.d/vendor
+fi
+
+tools_mnt=`grep svt-tools02 /etc/fstab`
+if [ -z "$tools_mnt" ]
+then
+    sudo mkdir -p /Support
+    sudo sh -c "echo svt-tools02:/captures/Support /Support nfs >> /etc/fstab"
+    sudo mount /Support
+fi
+
+cron_entry=`crontab -l | grep git_backup`
+if [ -z "$cron_entry" ]
+then
+    echo "Adding the following line to you crontab"
+    ct_line="0,15,30,45 * * * * $HOME/git/scripts/bin/git_backup"
+    echo "    $ct_line"
+    crontab -l | crontab <<EOF
+$ct_line
+EOF
+fi
+crashplan_proc=`ps -fe | grep CrashPlanService`
+if [ -z "$crashplan_proc" ]
+then
+    echo "Please install and configure CrashPlanPro to automate backup of:"
+    echo "    $HOME/git.backup"
+    echo "Getting CrashlanPro from here..."
+    echo "    http://www.code42.com/business"
+    echo "    http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4"
+    if [ ! -r $HOME/Downloads/CrashPlanPRO_3.6.4_Linux.tar ]
+    then
+        mkdir -p Downloads 2>/dev/null
+        cd Downloads
+        wget http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4
+        gunzip CrashPlanPRO_3.6.4_Linux.tgz
+        tar xf CrashPlanPRO_3.6.4_Linux.tar
+        echo "    Run:"
+        echo "        $HOME/Downloads/CrashPlanPRO-install/install.sh"
+        echo "    to install Crash Plan"
+        cd $HOME
+    fi
 fi

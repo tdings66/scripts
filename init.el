@@ -1003,3 +1003,28 @@ by Prelude.")
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 ;(setq frame-background-mode 'dark)
 
+(setq
+ backup-by-copying t      ; don't clobber symlinks
+ backup-directory-alist
+ '(("." . "~/.saves"))    ; don't litter my fs tree
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t)       ; use versioned backups
+
+
+(defvar my-mode-line-active-background "gray75")
+(defvar my-mode-line-inactive-background "gray40")
+
+(defun my-unhighlight-mode-line ()
+  (set-face-attribute 'mode-line nil
+                      :background my-mode-line-inactive-background))
+
+(add-hook 'focus-out-hook 'my-unhighlight-mode-line)
+
+(defun my-highlight-mode-line ()
+  (set-face-attribute 'mode-line nil
+                      :background my-mode-line-active-background))
+
+(add-hook 'focus-in-hook 'my-highlight-mode-line)
+
