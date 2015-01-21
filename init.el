@@ -1028,3 +1028,4 @@ by Prelude.")
 
 (add-hook 'focus-in-hook 'my-highlight-mode-line)
 
+(setenv "EDITOR" "emacsclient")

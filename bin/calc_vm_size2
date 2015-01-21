@@ -1,0 +1,52 @@
+#!/usr/bin/perl -w
+#
+#
+
+use strict;
+use XML::Simple;
+use Data::Dumper;
+
+my $sva = 'svtbuild@10.131.6.225';
+
+my $simple = new XML::Simple (KeyAttr=>'id');
+
+open (my $vmSh, "ssh $sva svt-vm-show -o xml |") || die "Failed: $!\n";
+my $vmList = $simple->XMLin($vmSh);
+close ($vmSh);
+# print Dumper($vmList);
+die "VM List not populated.\n" if (! $vmList->{VM});
+
+#svt-backup-show -o xml > /tmp/svt-backup-show.xml
+open (my $baSh, "ssh $sva svt-backup-show -o xml |") || die "Failed: $!\n";
+my $backupList = $simple->XMLin($baSh);
+close ($baSh);
+# print Dumper($backupList);
+die "VM List not populated.\n" if (! $backupList->{Backup});
+
+foreach my $key (keys ($backupList->{Backup})) {
+    my $backup = $backupList->{Backup}->{$key};
+    my $vm = $vmList->{VM}->{$backup->{hiveId}};
+    $vm->{backups}->{$key} = $backup;
+}
+
+print "VM Name\tBackkups\tLogical Size\n";
+foreach my $vm (values ($vmList->{VM})) {
+    my $count = 0;
+    foreach my $backup (values $vm->{backups}) {
+	++$count;
+	$vm->{totalSize} += $backup->{logicalSize};
+    }
+    print "$vm->{platformName}\t$count\t$vm->{totalSize}\n";
+}
+
+
+# foreach my $vm (values ($vmList->{VM})) {
+#     foreach my $backup (values $vm->{backups}) {
+#         print "dsv-tree-unique -tid $backup->{backupId}\n";
+#        system ("ssh svtbuild@10.131.6.225 ifconfig");
+#         print "`dsv-tree-unique -tid $backup->{backupId}`\n";
+#     }
+# }
+
+
+

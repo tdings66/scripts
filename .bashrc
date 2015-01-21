@@ -139,3 +139,9 @@ alias got='git '
 alias get='git '
 
 export TERM=xterm-256color
+
+#export EDITOR="emacsclient"
+if [ -z "$EDITOR" ]
+then
+    export EDITOR=vi
+fi

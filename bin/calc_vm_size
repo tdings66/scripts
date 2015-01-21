@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+#  To be run on an SVA as root.
+#  Find all the sizes of a VM, its HA replication, Backups local and remote and their HA replication
+#
+
+if [ 0 != `id -u` ]
+then
+    echo "Must run as root"
+    sudo $0 $@
+    exit
+fi
+
+
+
+
+analyze_vm()
+{
+    id=$1
+    name=$2
+    datastore=$3
+    
+    echo $id $name $datastore
+    svt-backup-show --vm $name --datastore $datastore
+}
+
+vm_list()
+{
+    svt-vm-show -o xml |
+        while read line
+        do
+            case $line in
+                "<datastore>"*)
+                    datastore=`echo $line | sed 's/<datastore>//' | sed 's,</datastore>,,'`
+                    name=""
+                    ;;
+                "<id>"*)
+                    id=`echo $line | sed 's/<id>//' | sed 's,</id>,,'`
+                    name=""
+                    ;;
+                "<platformName>"*)
+                    name=`echo $line | sed 's/<platformName>//' | sed 's,</platformName>,,'`
+                    analyze_vm $id $name $datastore
+                    id=""
+                    ;;
+                *)
+                    ;;
+            esac
+        done
+}
+
+vm_list
+
