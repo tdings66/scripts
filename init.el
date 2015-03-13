@@ -166,7 +166,7 @@
 (menu-bar-mode 1)
 (scroll-bar-mode -1)
 ;(fringe-mode "minimal")
-(display-time)
+;(display-time-mode nil)
 (setq global-mark-ring-max 64)
 (setq mark-ring-max 64)
 
@@ -1001,7 +1001,7 @@ by Prelude.")
 
 
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-;(setq frame-background-mode 'dark)
+;(setq frame<-background-mode 'dark)
 
 (setq
  backup-by-copying t      ; don't clobber symlinks
@@ -1029,3 +1029,23 @@ by Prelude.")
 (add-hook 'focus-in-hook 'my-highlight-mode-line)
 
 (setenv "EDITOR" "emacsclient")
+
+
+    ;; Enable helm-gtags-mode
+    (add-hook 'c-mode-hook 'helm-gtags-mode)
+    (add-hook 'c++-mode-hook 'helm-gtags-mode)
+    (add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+    ;; Set key bindings
+    (eval-after-load "helm-gtags"
+      '(progn
+         (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
+         (define-key helm-gtags-mode-map (kbd "M-r") 'helm-gtags-find-rtag)
+         (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
+         (define-key helm-gtags-mode-map (kbd "M-g M-p") 'helm-gtags-parse-file)
+         (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+         (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+         (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)))
+
+(require 'log-mode)
+(require 'grep+)

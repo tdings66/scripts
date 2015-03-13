@@ -60,6 +60,12 @@ then
     rm .emacs.d/init.el
     ln $HOME/git/scripts/init.el .emacs.d/init.el
 fi
+diff .emacs.d/log-mode.el $HOME/git/scripts/bin/log-mode.el 2>/dev/null
+if [ 0 -ne $? ]
+then
+    rm .emacs.d/log-mode.el
+    ln $HOME/git/scripts/bin/log-mode.el .emacs.d/log-mode.el
+fi
 
 if [ ! -d .emacs.d/vendor ]
 then

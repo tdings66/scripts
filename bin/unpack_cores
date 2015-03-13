@@ -33,6 +33,6 @@ EOF
             file "$file" > "$file.backtrace"
         fi
     fi
-    cat "$file.backtrace"
+    ls "$file.backtrace"
 done
 echo "All done."

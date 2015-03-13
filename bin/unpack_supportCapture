@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# Unpack support capture and get a backtrace of all cores
+#
+
+if [ 0 != `id -u` ]
+then
+    echo "This script was run as user `id -nu`, elevating to root"
+    sudo $0
+    exit
+fi
+
+find . -name Capture-\*MN.tgz -print |
+while read line
+do
+    set -x
+    gunzip $line
+    if [ $? -eq 0 ]
+    then
+        rm $line
+    fi
+done
+set +x
+
+find . -name Capture-\*MN.tar -print |
+while read line
+do
+    set -x
+    tar xf $line
+    if [ $? -eq 0 ]
+    then
+        rm $line
+    fi
+done
+set +x
+
+echo Done.
