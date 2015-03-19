@@ -53,6 +53,7 @@ link $HOME/.emacs.d/init.el 	$GIT_SCRIPTS/init.el
 link $HOME/.emacs.d/log-mode.el $GIT_SCRIPTS/bin/log-mode.el
 link $HOME/.byobu/.tmux.conf 	$GIT_SCRIPTS/.tmux.conf
 link $HOME/.gdbinit 		$GIT_SCRIPTS/bin/.gdbinit
+link $HOME/.byobu/status 	$GIT_SCRIPTS/status
 
 if [ ! -d .emacs.d/vendor ]
 then
