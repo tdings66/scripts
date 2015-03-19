@@ -30,42 +30,29 @@ then
     chmod 600 .ssh/authorized_keys
 fi
 
-diff .profile $HOME/git/scripts/.profile 2>/dev/null
-if [ 0 -ne $? ]
-then
-    rm .profile
-    ln $HOME/git/scripts/.profile .
-fi
-diff .bashrc $HOME/git/scripts/.bashrc 2>/dev/null
-if [ 0 -ne $? ]
-then
-    rm .bashrc
-    ln $HOME/git/scripts/.bashrc .
-fi
-diff .gitconfig $HOME/git/scripts/.gitconfig 2>/dev/null
-if [ 0 -ne $? ]
-then
-    rm .gitconfig
-    ln $HOME/git/scripts/.gitconfig .
-fi
-diff .git_message.txt $HOME/got/scripts/.git_message.txt 2>/dev/null
-if [ 0 -ne $? ]
-then
-    rm .git_message.txt
-    ln -s $HOME/git/scripts/.git_message.txt .
-fi
-diff .emacs.d/init.el $HOME/git/scripts/init.el 2>/dev/null
-if [ 0 -ne $? ]
-then
-    rm .emacs.d/init.el
-    ln $HOME/git/scripts/init.el .emacs.d/init.el
-fi
-diff .emacs.d/log-mode.el $HOME/git/scripts/bin/log-mode.el 2>/dev/null
-if [ 0 -ne $? ]
-then
-    rm .emacs.d/log-mode.el
-    ln $HOME/git/scripts/bin/log-mode.el .emacs.d/log-mode.el
-fi
+link ()
+{
+    used=$1
+    gitStored=$2
+
+    diff $used $gitStored 2>/dev/null
+    if [ 0 -ne $? ]
+    then
+        rm $used
+        ln $gitStored $used
+    fi
+}
+
+GIT_SCRIPTS=$HOME/git/scripts
+
+link $HOME/.profile 		$GIT_SCRIPTS/.profile
+link $HOME/.bashrc 		$GIT_SCRIPTS/.bashrc
+link $HOME/.gitconfig 		$GIT_SCRIPTS/.gitconfig
+link $HOME/.git_message.txt 	$GIT_SCRIPTS/.git_message.txt
+link $HOME/.emacs.d/init.el 	$GIT_SCRIPTS/init.el
+link $HOME/.emacs.d/log-mode.el $GIT_SCRIPTS/bin/log-mode.el
+link $HOME/.byobu/.tmux.conf 	$GIT_SCRIPTS/.tmux.conf
+link $HOME/.gdbinit 		$GIT_SCRIPTS/bin/.gdbinit
 
 if [ ! -d .emacs.d/vendor ]
 then
@@ -90,24 +77,24 @@ then
 $ct_line
 EOF
 fi
-crashplan_proc=`ps -fe | grep CrashPlanService`
-if [ -z "$crashplan_proc" ]
-then
-    echo "Please install and configure CrashPlanPro to automate backup of:"
-    echo "    $HOME/git.backup"
-    echo "Getting CrashlanPro from here..."
-    echo "    http://www.code42.com/business"
-    echo "    http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4"
-    if [ ! -r $HOME/Downloads/CrashPlanPRO_3.6.4_Linux.tar ]
-    then
-        mkdir -p Downloads 2>/dev/null
-        cd Downloads
-        wget http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4
-        gunzip CrashPlanPRO_3.6.4_Linux.tgz
-        tar xf CrashPlanPRO_3.6.4_Linux.tar
-        echo "    Run:"
-        echo "        $HOME/Downloads/CrashPlanPRO-install/install.sh"
-        echo "    to install Crash Plan"
-        cd $HOME
-    fi
-fi
+# crashplan_proc=`ps -fe | grep CrashPlanService`
+# if [ -z "$crashplan_proc" ]
+# then
+#     echo "Please install and configure CrashPlanPro to automate backup of:"
+#     echo "    $HOME/git.backup"
+#     echo "Getting CrashlanPro from here..."
+#     echo "    http://www.code42.com/business"
+#     echo "    http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4"
+#     if [ ! -r $HOME/Downloads/CrashPlanPRO_3.6.4_Linux.tar ]
+#     then
+#         mkdir -p Downloads 2>/dev/null
+#         cd Downloads
+#         wget http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4
+#         gunzip CrashPlanPRO_3.6.4_Linux.tgz
+#         tar xf CrashPlanPRO_3.6.4_Linux.tar
+#         echo "    Run:"
+#         echo "        $HOME/Downloads/CrashPlanPRO-install/install.sh"
+#         echo "    to install Crash Plan"
+#         cd $HOME
+#     fi
+# fi
