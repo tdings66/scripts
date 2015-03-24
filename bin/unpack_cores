@@ -19,6 +19,7 @@ do
     then
         echo "Unzipping $file.gz..."
         gunzip "$file.gz"
+	chmod o+r "$file"
     fi
     #   if [ -r "$file" ] && [ ! -r "$file.backtrace" ]
     if [ -r "$file" ] #&& [ ! -r "$file.backtrace" ]

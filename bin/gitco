@@ -52,17 +52,21 @@ done
 
 if [ dvm-3 == "`hostname`" ]
 then
-    # Senna.4 Fix Pack 1 (FP1)
-    # git checkout release/senna.4
-    # git pull
-    # git checkout -b ${USER}-2.1.4.455-Senna.M2-FP2 3323853d6d1a66fc746f8bac15d1208b219ab450
 
-    # 8ee0fb7ff3ee1893ccb27a02a25410f4ada9c489
+    # Senna.M3, Build 752
+    git checkout release/senna.6
+    git pull
+    git checkout -b ${USER}-2.1.6.752-Senna.M3 428317d12ad2bebacfed7f05d88793c4b07c2a4e
 
     # Senna.M2P, Build 552
     git checkout release/senna.5
     git pull
     git checkout -b ${USER}-2.1.5.552-Senna.M2P f85777fe6ea4fd247e523fd208666c2e48eef853
+
+    # Senna.4 Fix Pack 2 (FP2)
+    git checkout release/senna.4
+    git pull
+    git checkout -b ${USER}-2.1.4.455-Senna.M2-FP2 3323853d6d1a66fc746f8bac15d1208b219ab450
     
     # Senna.M2, Build 343 (RTM2)
     git checkout release/senna.4

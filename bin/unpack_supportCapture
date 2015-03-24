@@ -22,6 +22,8 @@ do
 done
 set +x
 
+chmod -R o+wr *
+
 find . -name Capture-\*MN.tar -print |
 while read line
 do
@@ -33,5 +35,8 @@ do
     fi
 done
 set +x
+
+chmod -R o+wr *
+
 
 echo Done.
