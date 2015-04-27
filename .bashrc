@@ -119,8 +119,8 @@ if [ -d "$HOME/.emacs.d/lroot/bin" ] ; then
     PATH="$HOME/.emacs.d/lroot/bin:$PATH"
 fi
 # Include coredebug if it exists
-if [ -d "$HOME/git/coredebug" ] ; then
-    PATH="$HOME/git/coredebug:$PATH"
+if [ -d "$HOME/git/coreutils" ] ; then
+    PATH="$HOME/git/coreutils:$PATH"
     export COREDEBUG_SVTFS_REPO=$HOME/git/rfs
 fi
 export PATH
@@ -145,3 +145,5 @@ if [ -z "$EDITOR" ]
 then
     export EDITOR=vi
 fi
+
+#export PERL5LIB=${PERL5LIB}:$HOME/lib

@@ -7,6 +7,9 @@ then
     mkdir -p $BU_DEST
 fi
 
+FILE_LOG=~/tmp/backup_file_log
+>$FILE_LOG
+
 cd ~/git
 find . -maxdepth 1 -type d |
     while read dir
@@ -20,10 +23,30 @@ find . -maxdepth 1 -type d |
                 then
                     mkdir -p "$dest"
                 fi
-                echo "$filePath"
+                echo "$dest/$filePath" >> $FILE_LOG
                 rsync -p "$filePath" "$dest"
             done
         cd ~/git
+    done
+
+cd $BU_DEST
+find . -maxdepth 1 -type d |
+    while read dir
+    do
+        cd $dir
+        find . -type f |
+            while read filePath
+            do
+                res=`grep $filepath $FILE_LOG`
+                if [ -z "$res" ]
+                then
+                    # This file is not in our current backup set
+                    echo "rm $filePath" >> $FILE_LOG
+                else
+                    echo "Keeping $filePath in backup set" >> $FILE_LOG
+                fi
+            done
+        cd $BU_DEST
     done
 
 echo Done.
