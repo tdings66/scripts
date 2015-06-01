@@ -53,6 +53,11 @@ done
 if [ dvm-3 == "`hostname`" ]
 then
 
+    # Senna.M3P, Build 806
+    git checkout release/senna.11
+    git pull
+    git checkout -b ${USER}-2.1.11.806-Senna.M3P 4aac2546944a7581fcbd360d8202cf85d4789a31
+    
     # Senna.M3, Build 752
     git checkout release/senna.6
     git pull

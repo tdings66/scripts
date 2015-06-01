@@ -1048,4 +1048,7 @@ by Prelude.")
          (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)))
 
 (require 'log-mode)
+  (message "Loaded log-mode")
+
 (require 'grep+)
+  (message "Loaded grep+")
