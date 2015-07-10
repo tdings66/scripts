@@ -28,6 +28,7 @@ then
     release/andes.5 \
     release/andes.6 \
     release/andes.7 \
+    release/andes.8 \
     "
 fi
 if [ -z "$branches" ]
