@@ -30,33 +30,80 @@ then
     chmod 600 .ssh/authorized_keys
 fi
 
-if [ ! -L .profile ]
-then
-    rm .profile
-    ln -s $HOME/git/scripts/.profile .
-fi
-if [ ! -L .bashrc ]
-then
-    rm .bashrc
-    ln -s $HOME/git/scripts/.bashrc .
-fi
-if [ -r .gitconfig ]
-then
-    rm .gitconfig
-    ln -s $HOME/git/scripts/.gitconfig .
-fi
-if [ ! -L .git_message.txt ]
-then
-    rm .git_message.txt
-    ln -s $HOME/got/scripts/.git_message.txt .
-fi
+link ()
+{
+    used=$1
+    gitStored=$2
 
-if [ ! -r .emacs.d/init.el ]
-then
-    ln -s $HOME/git/scripts/init.el .emacs.d/init.el
-fi
+    diff $used $gitStored 2>/dev/null
+    if [ 0 -ne $? ]
+    then
+        rm $used
+        ln $gitStored $used
+    fi
+}
+
+GIT_SCRIPTS=$HOME/git/scripts
+
+link $HOME/.profile 		$GIT_SCRIPTS/.profile
+link $HOME/.bashrc 		$GIT_SCRIPTS/.bashrc
+link $HOME/.gitconfig 		$GIT_SCRIPTS/.gitconfig
+link $HOME/.git_message.txt 	$GIT_SCRIPTS/.git_message.txt
+link $HOME/.emacs.d/init.el 	$GIT_SCRIPTS/init.el
+link $HOME/.emacs.d/log-mode.el $GIT_SCRIPTS/bin/log-mode.el
+link $HOME/.byobu/.tmux.conf 	$GIT_SCRIPTS/.tmux.conf
+link $HOME/.gdbinit 		$GIT_SCRIPTS/bin/.gdbinit
+link $HOME/.byobu/status 	$GIT_SCRIPTS/status
 
 if [ ! -d .emacs.d/vendor ]
 then
     mkdir .emacs.d/vendor
 fi
+
+tools_mnt=`grep 'svt-tools02:/captures/Support' /etc/fstab`
+if [ -z "$tools_mnt" ]
+then
+    sudo mkdir -p /Support
+    sudo sh -c "echo svt-tools02:/captures/Support /Support nfs >> /etc/fstab"
+    sudo mount /Support
+fi
+
+captures_mnt=`grep 'svt-tools02:/captures ' /etc/fstab`
+if [ -z "$captures_mnt" ]
+then
+    sudo mkdir -p /Captures
+    sudo sh -c "echo svt-tools02:/captures /Captures nfs >> /etc/fstab"
+    sudo mount /Captures
+fi
+
+cron_entry=`crontab -l | grep git_backup`
+if [ -z "$cron_entry" ]
+then
+    echo "Adding the following line to you crontab"
+    ct_line="0,15,30,45 * * * * $HOME/git/scripts/bin/git_backup"
+    echo "    $ct_line"
+    crontab -l | crontab <<EOF
+$ct_line
+EOF
+fi
+# crashplan_proc=`ps -fe | grep CrashPlanService`
+# if [ -z "$crashplan_proc" ]
+# then
+#     echo "Please install and configure CrashPlanPro to automate backup of:"
+#     echo "    $HOME/git.backup"
+#     echo "Getting CrashlanPro from here..."
+#     echo "    http://www.code42.com/business"
+#     echo "    http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4"
+#     if [ ! -r $HOME/Downloads/CrashPlanPRO_3.6.4_Linux.tar ]
+#     then
+#         mkdir -p Downloads 2>/dev/null
+#         cd Downloads
+#         wget http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4
+#         gunzip CrashPlanPRO_3.6.4_Linux.tgz
+#         tar xf CrashPlanPRO_3.6.4_Linux.tar
+#         echo "    Run:"
+#         echo "        $HOME/Downloads/CrashPlanPRO-install/install.sh"
+#         echo "    to install Crash Plan"
+#         cd $HOME
+#     fi
+# fi

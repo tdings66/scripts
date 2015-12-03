@@ -1,0 +1,4 @@
+# aliases to make the code more readable for non-perl programmers
+sub try(&) { eval {$_[0]->()} }
+sub throw($) { die $_[0] }
+sub catch(&) { $_[0]->($@) if $@ }

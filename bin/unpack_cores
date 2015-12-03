@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# Unpack support capture and get a backtrace of all cores
+#
+
+if [ 0 != `id -u` ]
+then
+    echo "This script was run as user `id -nu`, elevating to root"
+    sudo $0
+    exit
+fi
+
+find . -name core\*omnicube-ip\*.status -print |
+while read line
+do
+    echo "Found: $line"
+    file=`echo "$line" | sed 's/\.status//'`
+    if [ -r "$file.gz" ]
+    then
+        echo "Unzipping $file.gz..."
+        gunzip "$file.gz"
+	chmod o+r "$file"
+    fi
+    #   if [ -r "$file" ] && [ ! -r "$file.backtrace" ]
+    if [ -r "$file" ] #&& [ ! -r "$file.backtrace" ]
+    then
+        echo "Running debugger on $file..."
+        /home/tdings/git/coredebug/coredebug -o -f "$file" > "$file.backtrace" <<EOF
+t a a bt
+q
+EOF
+        if [ 0 != $? ]
+        then
+            file "$file" > "$file.backtrace"
+        fi
+    fi
+    ls "$file.backtrace"
+done
+echo "All done."

@@ -16,3 +16,6 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+if [ -n "$SSH_TTY" ]; then
+    _byobu_sourced=1 . /usr/bin/byobu-launch
+fi

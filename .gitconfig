@@ -21,3 +21,5 @@
 	diff = auto
 [commit]
 	template = /home/tdings/.git_message.txt
+[pull]
+	rebase = true

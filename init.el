@@ -163,10 +163,10 @@
 ;;;; ******* BASIC SETUP *******
 ;;;; Activate/deactivate various frame modes, mode line, and title bar utilities.
 (tool-bar-mode -1)
-(menu-bar-mode 1)
+(menu-bar-mode nil)
 (scroll-bar-mode -1)
 ;(fringe-mode "minimal")
-(display-time)
+;(display-time-mode nil)
 (setq global-mark-ring-max 64)
 (setq mark-ring-max 64)
 
@@ -198,6 +198,8 @@
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
 (package-initialize)
+
+(require 'diff-mode)
 
 (defvar current-user
   (getenv
@@ -402,74 +404,22 @@ by Prelude.")
 ; ******* Favorite color-themes *******
 
 ;; Dark colored themes...
-;(color-theme-dark-laptop)
 
-;(color-theme-goldenrod)
-;(color-theme-oswald)
-;(color-theme-jsc-dark)
-;(color-theme-taylor)
-;(color-theme-comidia)
-;(color-theme-calm-forest)
-;(color-theme-matrix)
-;(color-theme-lawrence)
+;(color-theme-dark-laptop)
+;(color-theme-tty-dark)
 
 ;; Medium colored themes...
+
 ;(color-theme-classic)
 ;(color-theme-kingsajz)
 ;(color-theme-calm-forest)
 
-					;(color-theme-robin-hood)
-;(color-theme-gnome2)
-
 ;; Light colored themes...
 
-
-					;(color-theme-wheat)
+;(color-theme-aalto-light)
+;(color-theme-wheat)
 ;(color-theme-pierson)
 ;(color-theme-emacs21)
-
-;; A big list of color themes
-;(color-theme-arjen)
-;(color-theme-calm-forest)
-;(color-theme-clarity)
-;(color-theme-classic)
-;(color-theme-comidia)
-;(color-theme-dark-laptop)
-;(color-theme-digital-ofs1)
-;(color-theme-euphoria)
-;(color-theme-example)
-;(color-theme-gnome)
-;(color-theme-gnome2)
-;(color-theme-goldenrod)
-;(color-theme-gray30)
-;(color-theme-hober)
-;(color-theme-infodoc)
-;(color-theme-jsc-dark)
-;(color-theme-lawrence)
-;(color-theme-ld-dark)
-;(color-theme-lethe)
-;(color-theme-marquardt)
-;(color-theme-matrix)
-;(color-theme-midnight)
-;(color-theme-molokai)
-;(color-theme-oswald)
-;(color-theme-pierson)
-;(color-theme-renegade)
-;(color-theme-retro-green)
-;(color-theme-retro-orange)
-;(color-theme-robin-hood)
-;(color-theme-rotor)
-;(color-theme-shaman)
-;(color-theme-sitaramv-solaris)
-;(color-theme-standard)
-;(color-theme-subtle-blue)
-;(color-theme-subtle-hacker)
-;(color-theme-taylor)
-;(color-theme-tty-dark)
-;(color-theme-whateveryouwant)
-;(color-theme-wheat)
-;(color-theme-wordperfect)
-;(color-theme-xemacs)
 
 
 ;;;; Desktop
@@ -1051,5 +1001,55 @@ by Prelude.")
 
 
 ;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-;(setq frame-background-mode 'dark)
+;(setq frame<-background-mode 'dark)
+
+(setq
+ backup-by-copying t      ; don't clobber symlinks
+ backup-directory-alist
+ '(("." . "~/.saves"))    ; don't litter my fs tree
+ delete-old-versions t
+ kept-new-versions 6
+ kept-old-versions 2
+ version-control t)       ; use versioned backups
+
+
+(defvar my-mode-line-active-background "gray75")
+(defvar my-mode-line-inactive-background "gray40")
+
+(defun my-unhighlight-mode-line ()
+  (set-face-attribute 'mode-line nil
+                      :background my-mode-line-inactive-background))
+
+(add-hook 'focus-out-hook 'my-unhighlight-mode-line)
+
+(defun my-highlight-mode-line ()
+  (set-face-attribute 'mode-line nil
+                      :background my-mode-line-active-background))
+
+(add-hook 'focus-in-hook 'my-highlight-mode-line)
+
+(setenv "EDITOR" "emacsclient")
+
+
+    ;; Enable helm-gtags-mode
+    (add-hook 'c-mode-hook 'helm-gtags-mode)
+    (add-hook 'c++-mode-hook 'helm-gtags-mode)
+    (add-hook 'asm-mode-hook 'helm-gtags-mode)
+
+    ;; Set key bindings
+    (eval-after-load "helm-gtags"
+      '(progn
+         (define-key helm-gtags-mode-map (kbd "M-t") 'helm-gtags-find-tag)
+         (define-key helm-gtags-mode-map (kbd "M-r") 'helm-gtags-find-rtag)
+         (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-find-symbol)
+         (define-key helm-gtags-mode-map (kbd "M-g M-p") 'helm-gtags-parse-file)
+         (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+         (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history)
+         (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)))
+
+(require 'log-mode)
+  (message "Loaded log-mode")
+
+(require 'grep+)
+  (message "Loaded grep+")
 

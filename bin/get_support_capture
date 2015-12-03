@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+#
+if [ $# -ne 2 ]
+then
+    echo "Usage:"
+    echo "    $0 From To"
+    echo "        where From is like: /Support/CVENT/2014-12-29"
+    echo "        where To is like: \$HOME/core/FI-287"
+    exit
+fi
+
+from=$1
+to=$2
+
+if [ ! -d "$from" ]
+then
+    echo "$from is not a directory"
+    exit
+fi
+
+if [ ! -d "$to" ]
+then
+    parent=`dirname $to`
+    if [ ! -d $parent ]
+    then
+        echo "$to is not a directory"
+        exit
+    fi
+    mkdir "$to"
+fi
+
+echo "From: $from"
+ls "$from"
+
+echo "To: $to"
+ls "$to"
+
+cd "$to"
+for file in "$from"/*
+do
+    filename=`basename "$file"`
+    case "$filename" in
+        *.tgz)
+            tar xzf "$file"
+            ;;
+        *.tar.gz)
+            tar xzf "$file"
+            ;;
+        *.gz)
+            rsync "$file" .
+            gunzip $filename
+            ;;
+        *.zip)
+            rsync "$file" .
+            gunzip $filename
+            ;;
+        *)
+            rsync "$file" .
+    esac
+done
