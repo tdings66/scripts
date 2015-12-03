@@ -35,6 +35,7 @@ fi
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
     xterm-color) color_prompt=yes;;
+    xterm-256color) color_prompt=yes;;
 esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -54,16 +55,16 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='\[\033[01;32m\]\u@\h\[\033[00m\] \$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='\u@\h \$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+#    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h]$PS1"
     ;;
 *)
     ;;
@@ -122,6 +123,10 @@ fi
 if [ -d "$HOME/git/coreutils" ] ; then
     PATH="$HOME/git/coreutils:$PATH"
     export COREDEBUG_SVTFS_REPO=$HOME/git/rfs
+fi
+# Include fetchcap if it exists
+if [ -d "$HOME/git/support-tools/digest" ] ; then
+    PATH="$HOME/git/support-tools/digest:$PATH"
 fi
 export PATH
 

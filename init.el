@@ -163,7 +163,7 @@
 ;;;; ******* BASIC SETUP *******
 ;;;; Activate/deactivate various frame modes, mode line, and title bar utilities.
 (tool-bar-mode -1)
-(menu-bar-mode 1)
+(menu-bar-mode nil)
 (scroll-bar-mode -1)
 ;(fringe-mode "minimal")
 ;(display-time-mode nil)
@@ -1052,3 +1052,4 @@ by Prelude.")
 
 (require 'grep+)
   (message "Loaded grep+")
+

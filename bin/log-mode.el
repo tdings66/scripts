@@ -14,9 +14,9 @@
 
 	    ("\\(0x[0-9a-f]*\\)" . 'font-lock-builtin-face)		; thread
 
-	    ("\\(\\[[a-z\\.]*\\]\\)" . 'bookmark-menu-heading)		; directory
+	    ("\\(\\[[A-z0-9\\.]*\\]\\)" . 'bookmark-menu-heading)		; directory
 
-	    ("\\([A-z_-]+\\.[a-z]+:[0-9]+\\)" . 'font-lock-constant-face)	; source file
+	    ("\\([A-z0-9_-]+\\.[a-z]+:[0-9]+\\)" . 'font-lock-constant-face)	; source file
            ;("\\([a-z_-]+\\.[a-z]+:[0-9]+\\)" . (log-source-file))	; source file
 
 	    ("\\([0-9a-f]*-[0-9a-f]*-[0-9a-f]*-[0-9a-f]*-[0-9a-f]*\\)" . 'message-cited-text)

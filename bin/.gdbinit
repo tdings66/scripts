@@ -1,4 +1,6 @@
 set print frame-arguments all
+set scheduler-locking step
+set height 0
 #source $HOME/git/rfs/src/tools/gdb-printers/global_gdbinit
 python
 printersdir = '/home/tdings/git/coreutils'
