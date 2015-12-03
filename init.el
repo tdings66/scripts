@@ -514,9 +514,9 @@ by Prelude.")
 
 ;;;; ******* GDB STUFF *******
 ;;;; OPTIONAL, avoid typing full path when starting gdb
-;(global-set-key (kbd "C-c C-g")
-; '(lambda ()(interactive) (gud-gdb (concat "gdb --fullname " (cppcm-get-exe-path-current-buffer))))
-;)
+(global-set-key (kbd "C-c C-g")
+ '(lambda ()(interactive) (gud-gdb ("~/git/scripts/coredebug/coredebug -o --fullname ")))
+)
 
 
 ;;;; ******* SETUP TAGS-FILE *******
