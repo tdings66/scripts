@@ -50,7 +50,6 @@ link $HOME/.bashrc 		$GIT_SCRIPTS/.bashrc
 link $HOME/.gitconfig 		$GIT_SCRIPTS/.gitconfig
 link $HOME/.git_message.txt 	$GIT_SCRIPTS/.git_message.txt
 link $HOME/.emacs.d/init.el 	$GIT_SCRIPTS/init.el
-link $HOME/.emacs.d/log-mode.el $GIT_SCRIPTS/bin/log-mode.el
 link $HOME/.byobu/.tmux.conf 	$GIT_SCRIPTS/.tmux.conf
 link $HOME/.gdbinit 		$GIT_SCRIPTS/bin/.gdbinit
 link $HOME/.byobu/status 	$GIT_SCRIPTS/status
@@ -86,24 +85,3 @@ then
 $ct_line
 EOF
 fi
-# crashplan_proc=`ps -fe | grep CrashPlanService`
-# if [ -z "$crashplan_proc" ]
-# then
-#     echo "Please install and configure CrashPlanPro to automate backup of:"
-#     echo "    $HOME/git.backup"
-#     echo "Getting CrashlanPro from here..."
-#     echo "    http://www.code42.com/business"
-#     echo "    http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4"
-#     if [ ! -r $HOME/Downloads/CrashPlanPRO_3.6.4_Linux.tar ]
-#     then
-#         mkdir -p Downloads 2>/dev/null
-#         cd Downloads
-#         wget http://www.code42.com/r/dl/client/CrashPlanPRO/linux/3.6.4
-#         gunzip CrashPlanPRO_3.6.4_Linux.tgz
-#         tar xf CrashPlanPRO_3.6.4_Linux.tar
-#         echo "    Run:"
-#         echo "        $HOME/Downloads/CrashPlanPRO-install/install.sh"
-#         echo "    to install Crash Plan"
-#         cd $HOME
-#     fi
-# fi
