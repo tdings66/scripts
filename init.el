@@ -20,9 +20,65 @@
  '(tool-bar-mode nil)
  '(version-control t))
 
-;;;; ******* EMACS PACKAGE MANAGER *******
-(package-initialize)
+
+;;; ******* SVTFS.LOG colorization *****
+(add-to-list 'load-path "~/git/scripts/bin")
+(require 'log-mode)
+  (message "Loaded log-mode")
+
+
+;;;; ******* GDB STUFF *******
+;;;; OPTIONAL, avoid typing full path when starting gdb
+(global-set-key (kbd "C-c C-g")
+ '(lambda ()(interactive) (gud-gdb (concat "coredebug -o --fullname " (cppcm-get-exe-path-current-buffer))))
+)
+
+
+;; ********** Investigate GNU Global for cscope replacement. *********
+;; From : /usr/share/emacs/site-lisp/global/gtags.el
+(add-to-list 'load-path "/usr/share/emacs/site-lisp/global")
+;(require 'gtags)
+(autoload 'gtags-mode "gtags" "" t)
+
+(setq c-mode-hook '(lambda ()(gtags-mode 1)))
+(setq cc-mode-hook '(lambda ()(gtags-mode 1)))
+
+
+
+;;; ******* Colorize the active window's mode-line
+;;;  Use M-x list-faces-display to edit this.
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
+ '(cursor ((t (:background "green" :foreground "black"))))
+ '(font-lock-builtin-face ((t (:foreground "color-21"))))
+ '(font-lock-function-name-face ((t (:foreground "color-53"))))
+ '(font-lock-type-face ((t (:foreground "color-172"))))
+ '(font-lock-variable-name-face ((t (:foreground "brightblue"))))
+ '(gdb-arrow-face ((t (:background "red" :foreground "brightyellow"))) t)
+ '(mode-line ((t (:background "brightgreen" :foreground "black" :box (:line-width -1 :style released-button)))))
+ '(mode-line-buffer-id ((t (:inherit nil :background "white" :foreground "red" :weight bold))))
+ '(mode-line-emphasis ((t nil)))
+ '(mode-line-highlight ((t nil)))
+ '(mode-line-inactive ((t (:background "brightred" :foreground "black" :weight light))))
+ '(show-paren-match ((t (:inverse-video t))))
+ '(vertical-border ((t (:background "white" :foreground "black"))))
+ '(vertical-divider ((t (:background "white" :foreground "black"))))
+ '(window-divider ((t (:background "white" :foreground "black")))))
+
+
+;;;(add-hook 'dired-mode-hook 'color-theme-high-contrast)
+
+
+;;;; ******* EMACS PACKAGE MANAGER ******* Requires emacs v24
+(if (boundp 'package-initialize)
+((package-initialize)
+
 ;;;;; Add things after this line that require packages.
+;;;;; Keep things above here if they don't need packages.
 
 
 ;; ******* ENABLE A COLOR THEME *******
@@ -63,53 +119,4 @@
     (my-theme-set-default)
 (global-set-key [f10] 'my-theme-cycle)
 
-
-;;; ******* SVTFS.LOG colorization *****
-(add-to-list 'load-path "~/git/scripts/bin")
-(require 'log-mode)
-  (message "Loaded log-mode")
-
-
-;;;; ******* GDB STUFF *******
-;;;; OPTIONAL, avoid typing full path when starting gdb
-(global-set-key (kbd "C-c C-g")
- '(lambda ()(interactive) (gud-gdb (concat "coredebug -o --fullname " (cppcm-get-exe-path-current-buffer))))
-)
-
-
-;; ********** Investigate GNU Global for cscope replacement. *********
-;; From : /usr/share/emacs/site-lisp/global/gtags.el
-(add-to-list 'load-path "/usr/share/emacs/site-lisp/global")
-;(require 'gtags)
-(autoload 'gtags-mode "gtags" "" t)
-
-(setq c-mode-hook '(lambda ()(gtags-mode 1)))
-(setq cc-mode-hook '(lambda ()(gtags-mode 1)))
-
-
-;;; ******* Colorize the active window's mode-line
-;;;  Use M-x list-faces-display to edit this.
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
- '(cursor ((t (:background "green" :foreground "black"))))
- '(font-lock-builtin-face ((t (:foreground "color-21"))))
- '(font-lock-function-name-face ((t (:foreground "color-53"))))
- '(font-lock-type-face ((t (:foreground "color-172"))))
- '(font-lock-variable-name-face ((t (:foreground "brightblue"))))
- '(gdb-arrow-face ((t (:background "red" :foreground "brightyellow"))) t)
- '(mode-line ((t (:background "brightgreen" :foreground "black" :box (:line-width -1 :style released-button)))))
- '(mode-line-buffer-id ((t (:inherit nil :background "white" :foreground "red" :weight bold))))
- '(mode-line-emphasis ((t nil)))
- '(mode-line-highlight ((t nil)))
- '(mode-line-inactive ((t (:background "brightred" :foreground "black" :weight light))))
- '(show-paren-match ((t (:inverse-video t))))
- '(vertical-border ((t (:background "white" :foreground "black"))))
- '(vertical-divider ((t (:background "white" :foreground "black"))))
- '(window-divider ((t (:background "white" :foreground "black")))))
-
-
-;;;(add-hook 'dired-mode-hook 'color-theme-high-contrast)
+)); end if (boundp 'package-initialize)
