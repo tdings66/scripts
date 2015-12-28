@@ -2,10 +2,10 @@
 (setenv "EDITOR" "emacsclient")
 (setenv "PAGER" "cat")
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
  '(backup-by-copying t)
  '(backup-directory-alist (quote (("." . "~/.saves"))))
  '(c-default-style "linux")
@@ -48,11 +48,11 @@
 ;;; ******* Colorize the active window's mode-line
 ;;;  Use M-x list-faces-display to edit this.
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "black" :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "#FFFFE0" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
  '(cursor ((t (:background "green" :foreground "black"))))
  '(font-lock-builtin-face ((t (:foreground "color-21"))))
  '(font-lock-function-name-face ((t (:foreground "color-53"))))
@@ -80,44 +80,49 @@
 ;;;;; Add things after this line that require packages.
 ;;;;; Keep things above here if they don't need packages.
 
+  (if (boundp 'color-theme-initialize)
+      (
 
-  ;; ******* ENABLE A COLOR THEME *******
+       ;; ******* ENABLE A COLOR THEME *******
 					;(unless (member "color-theme" package-alist) (package-install "color-theme"))
 					;(require 'color-theme)
-  (color-theme-initialize)
+       (color-theme-initialize)
 
-  (color-theme-tty-dark)
+       (color-theme-tty-dark)
 
-  (setq my-color-themes color-themes) ; Start with all of them
+       (setq my-color-themes color-themes) ; Start with all of them
 					;(setq my-color-themes (delete 'color-theme-aalto-dark my-color-themes))
 					;(setq my-color-themes (delete 'color-theme-aalto-light my-color-themes))
 
-  (defun car-theme () ;figure out if we need car or caar
-    (interactive)
-    (cond
-     ((consp (car theme-current))
-      (caar theme-current))
-     (t
-      (car theme-current))))
-  (defun my-theme-set-default () ; Set the first row
-    (interactive)
-    (setq theme-current my-color-themes)
-    (funcall (car-theme)))
-  (defun my-describe-theme () ; Show the current theme
-    (interactive)
-    (message "%s" (car-theme)))
-  (defun my-theme-cycle ()
-    (interactive)
-    (setq theme-current (cdr theme-current))
-    (if (null theme-current)
-	(setq theme-current my-color-themes)
-      (funcall (car-theme)))
-    (message "%S" (car-theme)))
+       (defun car-theme () ;figure out if we need car or caar
+	 (interactive)
+	 (cond
+	  ((consp (car theme-current))
+	   (caar theme-current))
+	  (t
+	   (car theme-current))))
+       (defun my-theme-set-default () ; Set the first row
+	 (interactive)
+	 (setq theme-current my-color-themes)
+	 (funcall (car-theme)))
+       (defun my-describe-theme () ; Show the current theme
+	 (interactive)
+	 (message "%s" (car-theme)))
+       (defun my-theme-cycle ()
+	 (interactive)
+	 (setq theme-current (cdr theme-current))
+	 (if (null theme-current)
+	     (setq theme-current my-color-themes)
+	   (funcall (car-theme)))
+	 (message "%S" (car-theme)))
 
-  (setq theme-current my-color-themes)
+       (setq theme-current my-color-themes)
 					;(setq color-theme-is-global nil) ; Initialization
-  (my-theme-set-default)
-  (global-set-key [f10] 'my-theme-cycle)
+       (my-theme-set-default)
+       (global-set-key [f10] 'my-theme-cycle)
 
-  )
+       ) ; end if color-theme
+    (message "No Color Themese in this emacs")
+    )
+)
 
