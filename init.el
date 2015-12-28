@@ -74,49 +74,50 @@
 
 
 ;;;; ******* EMACS PACKAGE MANAGER ******* Requires emacs v24
-(if (boundp 'package-initialize)
-((package-initialize)
-
+(add-hook 'after-init-hook 'my-after-init-hook)
+(defun my-after-init-hook ()
+  ;; do things after package initialization
 ;;;;; Add things after this line that require packages.
 ;;;;; Keep things above here if they don't need packages.
 
 
-;; ******* ENABLE A COLOR THEME *******
-;(unless (member "color-theme" package-alist) (package-install "color-theme"))
-;(require 'color-theme)
-(color-theme-initialize)
+  ;; ******* ENABLE A COLOR THEME *******
+					;(unless (member "color-theme" package-alist) (package-install "color-theme"))
+					;(require 'color-theme)
+  (color-theme-initialize)
 
-(color-theme-tty-dark)
+  (color-theme-tty-dark)
 
-(setq my-color-themes color-themes) ; Start with all of them
-;(setq my-color-themes (delete 'color-theme-aalto-dark my-color-themes))
-;(setq my-color-themes (delete 'color-theme-aalto-light my-color-themes))
+  (setq my-color-themes color-themes) ; Start with all of them
+					;(setq my-color-themes (delete 'color-theme-aalto-dark my-color-themes))
+					;(setq my-color-themes (delete 'color-theme-aalto-light my-color-themes))
 
-(defun car-theme () ;figure out if we need car or caar
-  (interactive)
-  (cond
-   ((consp (car theme-current))
-    (caar theme-current))
-   (t
-            (car theme-current))))
-(defun my-theme-set-default () ; Set the first row
-  (interactive)
-  (setq theme-current my-color-themes)
-        (funcall (car-theme)))
-(defun my-describe-theme () ; Show the current theme
-  (interactive)
-  (message "%s" (car-theme)))
-(defun my-theme-cycle ()
-  (interactive)
-  (setq theme-current (cdr theme-current))
-  (if (null theme-current)
-      (setq theme-current my-color-themes)
+  (defun car-theme () ;figure out if we need car or caar
+    (interactive)
+    (cond
+     ((consp (car theme-current))
+      (caar theme-current))
+     (t
+      (car theme-current))))
+  (defun my-theme-set-default () ; Set the first row
+    (interactive)
+    (setq theme-current my-color-themes)
     (funcall (car-theme)))
-  (message "%S" (car-theme)))
+  (defun my-describe-theme () ; Show the current theme
+    (interactive)
+    (message "%s" (car-theme)))
+  (defun my-theme-cycle ()
+    (interactive)
+    (setq theme-current (cdr theme-current))
+    (if (null theme-current)
+	(setq theme-current my-color-themes)
+      (funcall (car-theme)))
+    (message "%S" (car-theme)))
 
-(setq theme-current my-color-themes)
-;(setq color-theme-is-global nil) ; Initialization
-    (my-theme-set-default)
-(global-set-key [f10] 'my-theme-cycle)
+  (setq theme-current my-color-themes)
+					;(setq color-theme-is-global nil) ; Initialization
+  (my-theme-set-default)
+  (global-set-key [f10] 'my-theme-cycle)
 
-)); end if (boundp 'package-initialize)
+  )
+
