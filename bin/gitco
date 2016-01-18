@@ -3,6 +3,22 @@
 # Make a local branch for each important point
 #
 
+mkbr()
+{
+    from=$1
+    to=$2
+    point=$3
+
+    git checkout $from
+    exists=`git branch | grep $to`
+    if [ -n "$exists" ]
+    then
+	echo "$to...already exists"
+    else
+	git checkout -b $to $point
+    fi
+}
+
 branches=
 if [ dvm-3 == "`hostname`" ]
 then
@@ -16,6 +32,7 @@ then
     release/senna.5 \
     release/senna.6 \
     release/senna.7 \
+    release/senna.11 \
     release/andes.1 \
     release/andes.2 \
     release/andes.3 \
@@ -45,82 +62,64 @@ do
     if [ -n "$exists" ]
     then
 	echo "...already exists"
+	git checkout $branch
+	git pull
     else
 	git checkout -b $branch --track origin/$branch
 	git pull
     fi
 done
 
+git pull
+for branch in `git br | grep -v '*'`
+do
+    echo "Branch: $branch"
+    git co $branch
+    git pull
+done
+
 if [ dvm-3 == "`hostname`" ]
 then
 
     # Senna.M3PR, Build 829
-    git checkout release/senna.11
-    git pull
-    git checkout -b ${USER}-2.1.11.829-Senna.M3PR 6e3729f381dd3ba4298807040ad753042c488246
+    mkbr release/senna.11 ${USER}-2.1.11.829-Senna.M3PR 6e3729f381dd3ba4298807040ad753042c488246
     
     # Senna.M3P, Build 806
-    git checkout release/senna.11
-    git pull
-    git checkout -b ${USER}-2.1.11.806-Senna.M3P 4aac2546944a7581fcbd360d8202cf85d4789a31
+    mkbr release/senna.11 ${USER}-2.1.11.806-Senna.M3P 4aac2546944a7581fcbd360d8202cf85d4789a31
     
     # Senna.M3, Build 752
-    git checkout release/senna.6
-    git pull
-    git checkout -b ${USER}-2.1.6.752-Senna.M3 428317d12ad2bebacfed7f05d88793c4b07c2a4e
+    mkbr release/senna.6 ${USER}-2.1.6.752-Senna.M3 428317d12ad2bebacfed7f05d88793c4b07c2a4e
 
     # Senna.M2P, Build 552
-    git checkout release/senna.5
-    git pull
-    git checkout -b ${USER}-2.1.5.552-Senna.M2P f85777fe6ea4fd247e523fd208666c2e48eef853
+    mkbr release/senna.5 ${USER}-2.1.5.552-Senna.M2P f85777fe6ea4fd247e523fd208666c2e48eef853
 
     # Senna.4 Fix Pack 2 (FP2)
-    git checkout release/senna.4
-    git pull
-    git checkout -b ${USER}-2.1.4.455-Senna.M2-FP2 3323853d6d1a66fc746f8bac15d1208b219ab450
+    mkbr release/senna.4 ${USER}-2.1.4.455-Senna.M2-FP2 3323853d6d1a66fc746f8bac15d1208b219ab450
     
     # Senna.M2, Build 343 (RTM2)
-    git checkout release/senna.4
-    git pull
-    git checkout -b ${USER}-2.1.4.343-Senna.M2-RTM2 f4fddd7e995d82ec4a00fb258d95fd0de5af66ef
+    mkbr release/senna.4 ${USER}-2.1.4.343-Senna.M2-RTM2 f4fddd7e995d82ec4a00fb258d95fd0de5af66ef
 
     # Senna.M2, Build 294 (RTM1)
-    git checkout release/senna.4
-    git pull
-    git checkout -b ${USER}-2.1.4.294-Senna.M2-RTM1 cefe098d7e3539bcf888be07c394aecadf49ba06
+    mkbr release/senna.4 ${USER}-2.1.4.294-Senna.M2-RTM1 cefe098d7e3539bcf888be07c394aecadf49ba06
 
     # Senna.0, Build 226 (FP3)
-    git checkout release/senna.0
-    git pull
-    git checkout -b ${USER}-2.1.0.226-Senna.0-FP3 5c7b29eea5dd7826a76fcf8a7a8596cdf783c86c
+    mkbr release/senna.0 ${USER}-2.1.0.226-Senna.0-FP3 5c7b29eea5dd7826a76fcf8a7a8596cdf783c86c
 
     # Senna.0, Build 199 (FP2)
-    git checkout release/senna.0
-    git pull
-    git checkout -b ${USER}-2.1.0.199-Senna.0-FP2 b8502fe22f973863c75a2475af284f405d7cb8b8
+    mkbr release/senna.0 ${USER}-2.1.0.199-Senna.0-FP2 b8502fe22f973863c75a2475af284f405d7cb8b8
 
     # Senna.0, Build 161
-    git checkout release/senna.0
-    git pull
-    git checkout -b ${USER}-2.1.0.161-Senna.0 63fb1169e9dce895a89d41102b27bed19b83b5e5
+    mkbr release/senna.0 ${USER}-2.1.0.161-Senna.0 63fb1169e9dce895a89d41102b27bed19b83b5e5
 
     # Senna.0, Build 102
-    git checkout release/senna.0
-    git pull
-    git checkout -b ${USER}-2.1.0.102-Senna.0 246b339df7dcc559e66b08268f3c8e7f864878f9
+    mkbr release/senna.0 ${USER}-2.1.0.102-Senna.0 246b339df7dcc559e66b08268f3c8e7f864878f9
 
     # Senna.1, Build 166
-    git checkout release/senna.1
-    git pull
-    git checkout -b ${USER}-2.1.1.166-Senna.1 aefb1bf390ef373e110a6b5beb1e9049c758d4df
+    mkbr release/senna.1 ${USER}-2.1.1.166-Senna.1 aefb1bf390ef373e110a6b5beb1e9049c758d4df
 
     # Senna.1, Build 108
-    git checkout release/senna.1
-    git pull
-    git checkout -b ${USER}-2.1.1.108-Senna.1 dac17632887e54086a10f2a6a5804db87cdf647a
+    mkbr release/senna.1 ${USER}-2.1.1.108-Senna.1 dac17632887e54086a10f2a6a5804db87cdf647a
 
     # Ascari.5
-    git checkout release/senna.0
-    git pull
-    git checkout -b ${USER}-1.5.72-Ascari.5 085cae89b6f9620d9446dca48c859d90d529754f
+    mkbr release/senna.0 ${USER}-1.5.72-Ascari.5 085cae89b6f9620d9446dca48c859d90d529754f
 fi
