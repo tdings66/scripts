@@ -2,10 +2,10 @@
 (setenv "EDITOR" "emacsclient")
 (setenv "PAGER" "cat")
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(backup-by-copying t)
  '(backup-directory-alist (quote (("." . "~/.saves"))))
  '(c-default-style "linux")
@@ -60,17 +60,20 @@
 ;;; ******* Colorize the active window's mode-line
 ;;;  Use M-x list-faces-display to edit this.
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#FFFFE0" :foreground "black" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
  '(cursor ((t (:background "green" :foreground "black"))))
  '(font-lock-builtin-face ((t (:foreground "color-21"))))
+ '(font-lock-constant-face ((t (:foreground "color-27"))))
  '(font-lock-function-name-face ((t (:foreground "color-53"))))
+ '(font-lock-other-type-face ((t (:foreground "color-27" :weight bold))))
+ '(font-lock-preprocessor-face ((t (:foreground "color-27"))))
  '(font-lock-type-face ((t (:foreground "color-172"))))
  '(font-lock-variable-name-face ((t (:foreground "brightblue"))))
- '(gdb-arrow-face ((t (:background "red" :foreground "brightyellow"))) t)
+ '(gdb-arrow-face ((t (:background "red" :foreground "brightyellow"))))
  '(mode-line ((t (:background "brightgreen" :foreground "black" :box (:line-width -1 :style released-button)))))
  '(mode-line-buffer-id ((t (:inherit nil :background "white" :foreground "red" :weight bold))))
  '(mode-line-emphasis ((t nil)))

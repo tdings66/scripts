@@ -15,7 +15,8 @@ find . -maxdepth 1 -type d |
     while read dir
     do
         cd $dir
-        git status --porcelain | egrep -v '^\?\?' | awk '{print $2}' |
+        #git status --porcelain | egrep -v '^\?\?' | awk '{print $2}' |
+	git status --porcelain | awk '{print $2}' |
             while read filePath
             do
                 dest="${BU_DEST}/$dir/`dirname $filePath`"
