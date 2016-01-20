@@ -46,6 +46,9 @@ then
     release/andes.6 \
     release/andes.7 \
     release/andes.8 \
+    release/andes.9 \
+    release/cordillera.1 \
+    release/himalayas.1 \
     "
 fi
 if [ -z "$branches" ]
