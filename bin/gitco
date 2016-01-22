@@ -84,45 +84,57 @@ done
 if [ dvm-3 == "`hostname`" ]
 then
 
-    # Senna.M3PR, Build 829
-    mkbr release/senna.11 ${USER}-2.1.11.829-Senna.M3PR 6e3729f381dd3ba4298807040ad753042c488246
-    
-    # Senna.M3P, Build 806
-    mkbr release/senna.11 ${USER}-2.1.11.806-Senna.M3P 4aac2546944a7581fcbd360d8202cf85d4789a31
-    
-    # Senna.M3, Build 752
-    mkbr release/senna.6 ${USER}-2.1.6.752-Senna.M3 428317d12ad2bebacfed7f05d88793c4b07c2a4e
-
-    # Senna.M2P, Build 552
-    mkbr release/senna.5 ${USER}-2.1.5.552-Senna.M2P f85777fe6ea4fd247e523fd208666c2e48eef853
-
-    # Senna.4 Fix Pack 2 (FP2)
-    mkbr release/senna.4 ${USER}-2.1.4.455-Senna.M2-FP2 3323853d6d1a66fc746f8bac15d1208b219ab450
-    
-    # Senna.M2, Build 343 (RTM2)
-    mkbr release/senna.4 ${USER}-2.1.4.343-Senna.M2-RTM2 f4fddd7e995d82ec4a00fb258d95fd0de5af66ef
-
-    # Senna.M2, Build 294 (RTM1)
-    mkbr release/senna.4 ${USER}-2.1.4.294-Senna.M2-RTM1 cefe098d7e3539bcf888be07c394aecadf49ba06
-
-    # Senna.0, Build 226 (FP3)
-    mkbr release/senna.0 ${USER}-2.1.0.226-Senna.0-FP3 5c7b29eea5dd7826a76fcf8a7a8596cdf783c86c
-
-    # Senna.0, Build 199 (FP2)
-    mkbr release/senna.0 ${USER}-2.1.0.199-Senna.0-FP2 b8502fe22f973863c75a2475af284f405d7cb8b8
-
-    # Senna.0, Build 161
-    mkbr release/senna.0 ${USER}-2.1.0.161-Senna.0 63fb1169e9dce895a89d41102b27bed19b83b5e5
+    # Ascari.5
+    mkbr release/senna.0 ${USER}-1.5.72-Ascari.5 085cae89b6f9620d9446dca48c859d90d529754f
 
     # Senna.0, Build 102
     mkbr release/senna.0 ${USER}-2.1.0.102-Senna.0 246b339df7dcc559e66b08268f3c8e7f864878f9
 
-    # Senna.1, Build 166
-    mkbr release/senna.1 ${USER}-2.1.1.166-Senna.1 aefb1bf390ef373e110a6b5beb1e9049c758d4df
+    # Senna.0, Build 161
+    mkbr release/senna.0 ${USER}-2.1.0.161-Senna.0 63fb1169e9dce895a89d41102b27bed19b83b5e5
+
+    # Senna.0, Build 199 (FP2)
+    mkbr release/senna.0 ${USER}-2.1.0.199-Senna.0-FP2 b8502fe22f973863c75a2475af284f405d7cb8b8
+
+    # Senna.0, Build 226 (FP3)
+    mkbr release/senna.0 ${USER}-2.1.0.226-Senna.0-FP3 5c7b29eea5dd7826a76fcf8a7a8596cdf783c86c
 
     # Senna.1, Build 108
     mkbr release/senna.1 ${USER}-2.1.1.108-Senna.1 dac17632887e54086a10f2a6a5804db87cdf647a
 
-    # Ascari.5
-    mkbr release/senna.0 ${USER}-1.5.72-Ascari.5 085cae89b6f9620d9446dca48c859d90d529754f
+    # Senna.1, Build 166
+    mkbr release/senna.1 ${USER}-2.1.1.166-Senna.1 aefb1bf390ef373e110a6b5beb1e9049c758d4df
+
+
+    # Senna.4 Fix Pack 2 (FP2)
+    mkbr release/senna.4 ${USER}-2.1.4.455-Senna.M2-FP2 3323853d6d1a66fc746f8bac15d1208b219ab450
+    
+    # Senna.M2, Build 294 (RTM1)
+    mkbr release/senna.4 ${USER}-2.1.4.294-Senna.M2-RTM1 cefe098d7e3539bcf888be07c394aecadf49ba06
+
+    # Senna.M2, Build 343 (RTM2)
+    mkbr release/senna.4 ${USER}-2.1.4.343-Senna.M2-RTM2 f4fddd7e995d82ec4a00fb258d95fd0de5af66ef
+
+    # Senna.M2P, Build 552
+    mkbr release/senna.5 ${USER}-2.1.5.552-Senna.M2P f85777fe6ea4fd247e523fd208666c2e48eef853
+
+
+    # Senna.M3, Build 752
+    mkbr release/senna.6 ${USER}-2.1.6.752-Senna.M3 428317d12ad2bebacfed7f05d88793c4b07c2a4e
+
+    # Senna.M3P, Build 806
+    mkbr release/senna.11 ${USER}-2.1.11.806-Senna.M3P 4aac2546944a7581fcbd360d8202cf85d4789a31
+
+    # Senna.M3PR, Build 829
+    mkbr release/senna.11 ${USER}-2.1.11.829-Senna.M3PR 6e3729f381dd3ba4298807040ad753042c488246
+
+fi
+
+
+if [ dvm-4 == "`hostname`" ]
+then
+
+    # Andes.8Release build number 312
+    mkbr release/andes.8 ${USER}-3.0.8.312-Andes.M1P 11375819c1f72e8a16fd01939a49b1e16d1c93e8
+
 fi
