@@ -43,6 +43,11 @@ link ()
     fi
 }
 
+if [ ! -d .emacs.d ]
+then
+    mkdir .emacs.d
+fi
+
 GIT_SCRIPTS=$HOME/git/scripts
 
 link $HOME/.profile 		$GIT_SCRIPTS/.profile
