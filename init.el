@@ -55,7 +55,24 @@
 (setq c-mode-hook '(lambda ()(gtags-mode 1)))
 (setq cc-mode-hook '(lambda ()(gtags-mode 1)))
 
+(defun jm-c-mode-common ()
+  (message "jm-c-mode-common")
+  (c-toggle-auto-hungry-state -1)
+  (auto-fill-mode 1)
+  (which-func-mode 1)
+  (show-paren-mode 1)
+  (column-number-mode 1)
+  (setq parens-require-spaces nil)
+  (c-set-style "ellemtel")
+  (setq c-basic-offset 4)
+  (setq tab-width 4)
+  (setq indent-tabs-mode nil)
+  (ggtags-mode)
+  (c-set-offset 'substatement-open 0))
 
+(add-hook 'c-mode-common-hook 'jm-c-mode-common)
+;;; Go Run the following in ~/git/rfs or at the top of the source tree
+; GTAGSFORCECPP=1 gtags
 
 ;;; ******* Colorize the active window's mode-line
 ;;;  Use M-x list-faces-display to edit this.
