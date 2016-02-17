@@ -45,12 +45,24 @@ then
     release/andes.5 \
     release/andes.6 \
     release/andes.7 \
+    "
+fi
+if [ sust-dvm41 == "`hostname`" ]
+then
+    branches="\
     release/andes.8 \
     release/andes.9 \
+    release/andes.10 \
     release/cordillera.1 \
+    "
+fi
+if [ dvm5 == "`hostname`" ]
+then
+    branches="\
     release/himalayas.1 \
     "
 fi
+
 if [ -z "$branches" ]
 then
     echo "ERROR: Branches list is empty."
@@ -64,11 +76,14 @@ do
     exists=`git branch | grep $branch`
     if [ -n "$exists" ]
     then
-	echo "...already exists"
+	echo "Branch exists locally"
 	git checkout $branch
+	echo "updating local copy..."
 	git pull
     else
+	echo "Creating branch locally"
 	git checkout -b $branch --track origin/$branch
+	echo "updating local copy..."
 	git pull
     fi
 done
@@ -131,7 +146,7 @@ then
 fi
 
 
-if [ dvm-4 == "`hostname`" ]
+if [ sust-dvm41 == "`hostname`" ]
 then
 
     # Andes.8Release build number 312
