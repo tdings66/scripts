@@ -67,12 +67,19 @@
   (setq c-basic-offset 4)
   (setq tab-width 4)
   (setq indent-tabs-mode nil)
-  (ggtags-mode)
+  (gtags-mode)
   (c-set-offset 'substatement-open 0))
 
 (add-hook 'c-mode-common-hook 'jm-c-mode-common)
 ;;; Go Run the following in ~/git/rfs or at the top of the source tree
 ; GTAGSFORCECPP=1 gtags
+
+;;; ******* Basic Etags Stuff *******
+(setq tags-table-list
+      '("~/git/rfs"))
+;;; Go Run the following in ~/git/rfs or at the top of the source tree
+; find . -name "*.[chCH]*" -print | xargs etags
+
 
 ;;; ******* Colorize the active window's mode-line
 ;;;  Use M-x list-faces-display to edit this.
