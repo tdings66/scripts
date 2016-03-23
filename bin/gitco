@@ -45,6 +45,10 @@ then
     release/andes.5 \
     release/andes.6 \
     release/andes.7 \
+    release/andes.8 \
+    release/andes.9 \
+    release/andes.10 \
+    release/cordillera.1 \
     "
 fi
 if [ sust-dvm41 == "`hostname`" ]
