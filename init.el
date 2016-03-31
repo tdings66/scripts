@@ -79,7 +79,9 @@
       '("~/git/rfs"))
 ;;; Go Run the following in ~/git/rfs or at the top of the source tree
 ; find . -name "*.[chCH]*" -print | xargs etags
-
+;
+; find . -name "*.[chCH]*" -print > files ; etags `cat files`
+;
 
 ;;; ******* Colorize the active window's mode-line
 ;;;  Use M-x list-faces-display to edit this.
