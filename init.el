@@ -70,6 +70,9 @@
   (gtags-mode)
   (c-set-offset 'substatement-open 0))
 
+(setq tab-width 4)
+(setq indent-tabs-mode nil)
+
 (add-hook 'c-mode-common-hook 'jm-c-mode-common)
 ;;; Go Run the following in ~/git/rfs or at the top of the source tree
 ; GTAGSFORCECPP=1 gtags
