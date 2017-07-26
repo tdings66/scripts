@@ -2,7 +2,9 @@
 #
 # Make a local branch for each important point
 #
-
+# From:
+#    https://confluence.simplivt.local:8443/display/TestEng/SimpliVity+OmniStack+Releases
+#
 mkbr()
 {
     from=$1
@@ -155,5 +157,11 @@ then
 
     # Andes.8Release build number 312
     mkbr release/andes.8 ${USER}-3.0.8.312-Andes.M1P 11375819c1f72e8a16fd01939a49b1e16d1c93e8
+
+    # Andes.8Release build number 345
+    mkbr release/andes.8 ${USER}-3.0.8.345-Andes.U1 823097643bf751febd0ba5dc243ceed33145f29f
+
+    # Andes.10Release build number 91 - Formerly TRON
+    mkbr release/andes.10 ${USER}-3.0.10.91-Andes.M2 c6632dd6c43b6a2868c95c80a49e8dd5f3c27b79
 
 fi
