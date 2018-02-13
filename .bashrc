@@ -106,30 +106,7 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/git/scripts/bin" ] ; then
-    PATH="$HOME/git/scripts/bin:$PATH"
-fi
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.emacs.d/lroot/bin" ] ; then
-    PATH="$HOME/.emacs.d/lroot/bin:$PATH"
-fi
-# Include coredebug if it exists
-if [ -d "$HOME/git/coreutils" ] ; then
-    PATH="$HOME/git/coreutils:$PATH"
-    export COREDEBUG_SVTFS_REPO=$HOME/git/rfs
-fi
-# Include fetchcap if it exists
-if [ -d "$HOME/git/support-tools/digest" ] ; then
-    PATH="$HOME/git/support-tools/digest:$PATH"
-fi
-export PATH
-
+[ -r /home/tdings/.byobu/prompt ] && . /home/tdings/.byobu/prompt   #byobu-prompt#
 # GIT aliases
 alias gs='git status '
 alias ga='git add '
@@ -150,11 +127,3 @@ if [ -z "$EDITOR" ]
 then
     export EDITOR=vi
 fi
-
-#export PERL5LIB=${PERL5LIB}:$HOME/lib
-
-PATH="/home/tdings/perl5/bin${PATH:+:${PATH}}"; export PATH;
-PERL5LIB="/home/tdings/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/tdings/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-PERL_MB_OPT="--install_base \"/home/tdings/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/tdings/perl5"; export PERL_MM_OPT;
