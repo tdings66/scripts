@@ -72,6 +72,8 @@
 
 (setq tab-width 4)
 (setq indent-tabs-mode nil)
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
 
 (add-hook 'c-mode-common-hook 'jm-c-mode-common)
 ;;; Go Run the following in ~/git/rfs or at the top of the source tree
@@ -161,3 +163,5 @@
 (global-set-key [f10] 'my-theme-cycle)
 
 
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
