@@ -74,6 +74,9 @@
 (setq indent-tabs-mode nil)
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 0)
+(add-to-list 'auto-mode-alist '("\\.\\([pP][Llm]\\|al\\)\\'" . perl-mode))
 
 (add-hook 'c-mode-common-hook 'jm-c-mode-common)
 ;;; Go Run the following in ~/git/rfs or at the top of the source tree

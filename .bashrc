@@ -130,6 +130,11 @@ fi
 
 #export PERL5LIB=${PERL5LIB}:$HOME/lib
 
+export http_proxy=http://localhost:8888
+export https_proxy=http://localhost:8888
+export no_proxy=.hcilabs.hpecorp.net,.simplivt.local
+export no_proxy=10.1.187.81
+
 PATH="/home/tdings/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="/home/tdings/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
 PERL_LOCAL_LIB_ROOT="/home/tdings/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
